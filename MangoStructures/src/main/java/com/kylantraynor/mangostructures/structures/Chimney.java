@@ -84,6 +84,7 @@ public class Chimney extends Structure {
 								return;
 							}
 							setBlocks(new ArrayList<BlockState>());
+							return;
 						}
 					} else {
 						if (currentBlock.getLightFromSky() >= 14) {
