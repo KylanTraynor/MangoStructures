@@ -3,12 +3,15 @@ package com.kylantraynor.mangostructures.structures;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.entity.Player;
 import org.bukkit.material.Furnace;
 import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
@@ -51,7 +54,7 @@ public class Chimney extends Structure {
 		Block currentBlock = getLocation().getBlock();
 		ChimneyMaterial cm = getChimneyMaterial(currentBlock.getType());
 		BlockFace cd = getChimneyDirection(currentBlock.getState());
-		List<BlockState> list = new ArrayList();
+		List<BlockState> list = new ArrayList<BlockState>();
 		if (cm != null){
 			if (cm == ChimneyMaterial.FURNACE){
 				if (hasValidConnection(BlockFace.UP, currentBlock.getRelative(BlockFace.UP).getState())){
@@ -186,10 +189,24 @@ public class Chimney extends Structure {
 	public void puff(){
 		switch (getSmokeColor()){
 		case BLACK: 
-			getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.LARGE_SMOKE, 0, 200);
+			for(Player p : Bukkit.getServer().getOnlinePlayers()){
+				if(p.getLocation().distance(getEmiterLocation()) < 150){
+					p.spawnParticle(Particle.SMOKE_NORMAL,
+							getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5);
+					//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.LARGE_SMOKE, 0, 200);
+				}
+			}
+			//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.LARGE_SMOKE, 0, 200);
 			break;
 		case WHITE: default: 
-			getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.CLOUD, 0, 200);
+			for(Player p : Bukkit.getServer().getOnlinePlayers()){
+				if(p.getLocation().distance(getEmiterLocation()) < 150){
+					p.spawnParticle(Particle.SMOKE_LARGE,
+							getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5);
+					//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.LARGE_SMOKE, 0, 200);
+				}
+			}
+			//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.CLOUD, 0, 200);
 		}
 	}
 
