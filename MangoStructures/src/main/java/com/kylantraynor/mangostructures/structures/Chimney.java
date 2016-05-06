@@ -53,14 +53,14 @@ public class Chimney extends Structure {
 	private void updateConduit(){
 		Block currentBlock = getLocation().getBlock();
 		ChimneyMaterial cm = getChimneyMaterial(currentBlock.getType());
-		BlockFace cd = getChimneyDirection(currentBlock.getState());
+		BlockFace cd = getOutput(currentBlock.getState());
 		List<BlockState> list = new ArrayList<BlockState>();
 		if (cm != null){
 			if (cm == ChimneyMaterial.FURNACE){
-				if (hasValidConnection(BlockFace.UP, currentBlock.getRelative(BlockFace.UP).getState())){
+				if (hasValidConnection(BlockFace.UP, getInput(currentBlock.getRelative(BlockFace.UP).getState()))){
 					list.add(currentBlock.getState());
 					currentBlock = currentBlock.getRelative(BlockFace.UP);
-				} else if (hasValidConnection(cd, currentBlock.getRelative(cd).getState())) {
+				} else if (hasValidConnection(cd, getInput(currentBlock.getRelative(cd).getState()))) {
 					list.add(currentBlock.getState());
 					currentBlock = currentBlock.getRelative(cd);
 				} else {
@@ -71,9 +71,9 @@ public class Chimney extends Structure {
 				}
 				while (currentBlock.getY() < 255){
 					ChimneyMaterial cm1 = getChimneyMaterial(currentBlock.getType());
-					BlockFace cd1 = getChimneyDirection(currentBlock.getState());
+					BlockFace cd1 = getOutput(currentBlock.getState());
 					if (cm1 != null){
-						if (hasValidConnection(cd1, currentBlock.getRelative(cd1).getState())){
+						if (hasValidConnection(cd1, getInput(currentBlock.getRelative(cd1).getState()))){
 							list.add(currentBlock.getState());
 							currentBlock = currentBlock.getRelative(cd);
 						} else {
@@ -115,44 +115,53 @@ public class Chimney extends Structure {
 		}
 		return null;
 	}
-
-	private boolean hasValidConnection(BlockFace from, BlockState to){
-		if ((getChimneyMaterial(to.getType()) == null) || (getChimneyMaterial(to.getType()) == ChimneyMaterial.FURNACE)) {
-			return false;
-		}
-		switch (from){
-		case UP: 
-			if ((to.getData() instanceof Stairs)){
-				Stairs st = (Stairs)to.getData();
-				if (st.isInverted()) {
-					return false;
-				}
-				return true;
-			}
-			if ((to.getData() instanceof Step)) {
-				return false;
-			}
-			return true;
-		case NORTH: case SOUTH: case WEST: case EAST: 
-			if ((to.getData() instanceof Stairs)){
-				Stairs st = (Stairs)to.getData();
-				if (st.isInverted()){
-					if (st.getDescendingDirection().equals(from)) {
-						return true;
-					}
-					return false;
-				}
-				return false;
-			}
-			if ((to.getData() instanceof Step)) {
-				return false;
-			}
-			return true;
+	
+	
+	
+	private boolean hasValidConnection(BlockFace from, BlockFace to){
+		if(to == null) return true;
+		switch(to){
+		case NORTH:
+			return from == BlockFace.SOUTH;
+		case SOUTH:
+			return from == BlockFace.NORTH;
+		case EAST:
+			return from == BlockFace.WEST;
+		case WEST:
+			return from == BlockFace.EAST;
+		case DOWN:
+			return from == BlockFace.UP;
+		case UP:
+			return from == BlockFace.DOWN;
 		}
 		return false;
 	}
-
-	private BlockFace getChimneyDirection(BlockState state){
+	
+	private BlockFace getInput(BlockState state){
+		if ((state.getData() instanceof Stairs)){
+			Stairs stairs = (Stairs)state.getData();
+			if (!stairs.isInverted()) {
+				return BlockFace.DOWN;
+			}
+			switch (stairs.getAscendingDirection()){
+			case NORTH: 
+				return BlockFace.NORTH;
+			case SOUTH: 
+				return BlockFace.SOUTH;
+			case WEST: 
+				return BlockFace.WEST;
+			case EAST: 
+				return BlockFace.EAST;
+			}
+			return null;
+		}
+		if ((state.getData() instanceof Furnace)){
+			return BlockFace.DOWN;
+		}
+		return null;
+	}
+	
+	private BlockFace getOutput(BlockState state){
 		if ((state.getData() instanceof Stairs)){
 			Stairs stairs = (Stairs)state.getData();
 			if (stairs.isInverted()) {
