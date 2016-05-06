@@ -194,7 +194,7 @@ public class Chimney extends Structure {
 				if(!p.getLocation().getWorld().equals(getEmiterLocation().getWorld())) continue;
 				if(p.getLocation().distance(getEmiterLocation()) < 150){
 					p.spawnParticle(Particle.SMOKE_NORMAL,
-							getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5);
+							getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5, BlockFace.UP);
 					//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.LARGE_SMOKE, 0, 200);
 				}
 			}
@@ -205,7 +205,7 @@ public class Chimney extends Structure {
 				if(!p.getLocation().getWorld().equals(getEmiterLocation().getWorld())) continue;
 				if(p.getLocation().distance(getEmiterLocation()) < 150){
 					p.spawnParticle(Particle.SMOKE_LARGE,
-							getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5);
+							getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5, BlockFace.UP);
 					//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.LARGE_SMOKE, 0, 200);
 				}
 			}
