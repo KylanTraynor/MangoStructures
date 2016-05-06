@@ -197,6 +197,7 @@ public class Chimney extends Structure {
 	}
 
 	public void puff(){
+		if(true) return;
 		switch (getSmokeColor()){
 		case BLACK: 
 			for(Player p : Bukkit.getServer().getOnlinePlayers()){
