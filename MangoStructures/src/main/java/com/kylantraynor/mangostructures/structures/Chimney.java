@@ -16,6 +16,8 @@ import org.bukkit.material.Furnace;
 import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
 
+import com.kylantraynor.mangostructures.MangoStructures;
+
 public class Chimney extends Structure {
 	private Location emiterLocation;
 
@@ -197,14 +199,14 @@ public class Chimney extends Structure {
 	}
 
 	public void puff(){
-		if(true) return;
+		if(!MangoStructures.useChimneys) return;
 		switch (getSmokeColor()){
 		case BLACK: 
 			for(Player p : Bukkit.getServer().getOnlinePlayers()){
 				if(!p.getLocation().getWorld().equals(getEmiterLocation().getWorld())) continue;
 				if(p.getLocation().distance(getEmiterLocation()) < 150){
-					p.spawnParticle(Particle.SMOKE_NORMAL,
-							getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5, BlockFace.UP);
+					p.playEffect(getEmiterLocation(), Effect.SMOKE, BlockFace.UP);
+					//p.spawnParticle(Particle.SMOKE_NORMAL, getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5, BlockFace.UP);
 					//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.LARGE_SMOKE, 0, 200);
 				}
 			}
@@ -214,8 +216,8 @@ public class Chimney extends Structure {
 			for(Player p : Bukkit.getServer().getOnlinePlayers()){
 				if(!p.getLocation().getWorld().equals(getEmiterLocation().getWorld())) continue;
 				if(p.getLocation().distance(getEmiterLocation()) < 150){
-					p.spawnParticle(Particle.SMOKE_LARGE,
-							getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5, BlockFace.UP);
+					p.playEffect(getEmiterLocation(), Effect.SMOKE, BlockFace.UP);
+					//p.spawnParticle(Particle.SMOKE_LARGE, getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5, BlockFace.UP);
 					//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.LARGE_SMOKE, 0, 200);
 				}
 			}
