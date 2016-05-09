@@ -1,5 +1,6 @@
 package com.kylantraynor.mangostructures.structures;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,8 @@ import org.bukkit.material.Furnace;
 import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.PacketContainer;
 import com.kylantraynor.mangostructures.MangoStructures;
 
 public class Chimney extends Structure {
@@ -205,7 +208,7 @@ public class Chimney extends Structure {
 			for(Player p : Bukkit.getServer().getOnlinePlayers()){
 				if(!p.getLocation().getWorld().equals(getEmiterLocation().getWorld())) continue;
 				if(p.getLocation().distance(getEmiterLocation()) < 150){
-					p.playEffect(getEmiterLocation(), Effect.SMOKE, BlockFace.UP);
+					sendSmoke(p);
 					//p.spawnParticle(Particle.SMOKE_NORMAL, getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5, BlockFace.UP);
 					//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.LARGE_SMOKE, 0, 200);
 				}
@@ -216,12 +219,31 @@ public class Chimney extends Structure {
 			for(Player p : Bukkit.getServer().getOnlinePlayers()){
 				if(!p.getLocation().getWorld().equals(getEmiterLocation().getWorld())) continue;
 				if(p.getLocation().distance(getEmiterLocation()) < 150){
-					p.playEffect(getEmiterLocation(), Effect.SMOKE, BlockFace.UP);
+					sendSmoke(p);
 					//p.spawnParticle(Particle.SMOKE_LARGE, getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5, BlockFace.UP);
 					//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.LARGE_SMOKE, 0, 200);
 				}
 			}
 			//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.CLOUD, 0, 200);
+		}
+	}
+	
+	private void sendSmoke(Player p){
+		PacketContainer smoke = MangoStructures.protocolManager.createPacket(PacketType.Play.Server.WORLD_PARTICLES);
+		smoke.getIntegers().write(0, 12);
+		smoke.getBooleans().write(0, true);
+		smoke.getFloat().write(0,  (float) getEmiterLocation().getX()).
+		write(1, (float) getEmiterLocation().getY()).
+		write(2, (float) getEmiterLocation().getZ()).
+		write(3, 0.5f).
+		write(4, 0.5f).
+		write(5, 0.5f);
+		smoke.getIntegers().write(0,  15);
+		try {
+			MangoStructures.protocolManager.sendServerPacket(p, smoke);
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

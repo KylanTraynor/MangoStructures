@@ -13,6 +13,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import com.kylantraynor.mangostructures.commands.ChimneyCommand;
 import com.kylantraynor.mangostructures.structures.Chimney;
 import com.kylantraynor.mangostructures.structures.Structure;
@@ -20,9 +22,11 @@ import com.kylantraynor.mangostructures.structures.Structure;
 public class MangoStructures extends JavaPlugin implements Listener{
 	private List<Structure> structures = new ArrayList<Structure>();
 	private List<Chimney> activeChimneys = new ArrayList<Chimney>();
+	public static ProtocolManager protocolManager;
 	public static boolean useChimneys = false;
 	
 	public void onEnable(){
+		protocolManager = ProtocolLibrary.getProtocolManager();
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(this, this);
 		BukkitRunnable bk = new BukkitRunnable(){
