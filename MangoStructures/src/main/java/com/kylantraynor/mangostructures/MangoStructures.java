@@ -23,7 +23,7 @@ public class MangoStructures extends JavaPlugin implements Listener{
 	private List<Structure> structures = new ArrayList<Structure>();
 	private List<Chimney> activeChimneys = new ArrayList<Chimney>();
 	public static ProtocolManager protocolManager;
-	public static boolean useChimneys = false;
+	public static boolean useChimneys = true;
 	
 	public void onEnable(){
 		protocolManager = ProtocolLibrary.getProtocolManager();
