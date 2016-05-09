@@ -186,7 +186,9 @@ public class Chimney extends Structure {
 				sendSmoke(p);
 				if(!isSafe(p)){
 					p.damage(1);
-					p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 2));
+					if(p.getLocation().distance(getEmiterLocation()) < 2){
+						p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1));
+					}
 				}
 				//p.spawnParticle(Particle.SMOKE_LARGE, getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5, BlockFace.UP);
 				//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.LARGE_SMOKE, 0, 200);
