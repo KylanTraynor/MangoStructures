@@ -43,7 +43,7 @@ public class Chimney extends Structure {
 		if(getBlocks().size() == 0){
 			return getLocation().add(0.5,0.5,0.5);
 		} else {
-			return getBlocks().get(getBlocks().size() - 1).getLocation().add(0.5, 1, 0.5);
+			return getBlocks().get(getBlocks().size() - 1).getLocation().add(0.5, 1.5, 0.5);
 		}
 	}
 
@@ -244,17 +244,17 @@ public class Chimney extends Structure {
 		smoke.getFloat().write(0,  (float) getEmiterLocation().getX()).
 		write(1, (float) getEmiterLocation().getY()).
 		write(2, (float) getEmiterLocation().getZ()).
-		write(3, 0.5f).
+		write(3, 0.25f).
 		write(4, 0.5f).
-		write(5, 0.5f);
+		write(5, 0.25f);
 		switch(getSmokeColor()){
 		case BLACK:
-			smoke.getFloat().write(6, 2f);
+			smoke.getFloat().write(6, 0f);
 			break;
 		default:
 			break;
 		}
-		smoke.getIntegers().write(0,  15);
+		smoke.getIntegers().write(0,  30);
 		try {
 			MangoStructures.protocolManager.sendServerPacket(p, smoke);
 		} catch (InvocationTargetException e) {
