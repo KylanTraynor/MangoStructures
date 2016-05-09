@@ -16,6 +16,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.material.Furnace;
 import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
@@ -49,67 +51,17 @@ public class Chimney extends Structure {
 
 	public boolean isSafe() {
 		if (!getBlocks().isEmpty()){
-			if ((getBlocks().size() == 1) && (getLocation().getBlock().getLightFromSky() >= 14)) {
+			if ((getLocation().getBlock().getLightFromSky() >= 14)) {
 				return true;
 			}
 			if (getBlocks().size() > 1) {
 				return true;
 			}
 			return false;
+		} else if ((getLocation().getBlock().getLightFromSky() >= 14)) {
+			return true;
 		}
 		return false;
-	}
-
-	private void updateConduit2(){
-		Block currentBlock = getLocation().getBlock();
-		ChimneyMaterial cm = getChimneyMaterial(currentBlock.getType());
-		BlockFace cd = getOutput(currentBlock.getState());
-		List<BlockState> list = new ArrayList<BlockState>();
-		if (cm != null){
-			if (cm == ChimneyMaterial.FURNACE){
-				if (hasValidConnection(BlockFace.UP, getInput(currentBlock.getRelative(BlockFace.UP).getState()))){
-					list.add(currentBlock.getState());
-					currentBlock = currentBlock.getRelative(BlockFace.UP);
-				} else if (hasValidConnection(cd, getInput(currentBlock.getRelative(cd).getState()))) {
-					list.add(currentBlock.getState());
-					currentBlock = currentBlock.getRelative(cd);
-				} else {
-					//setEmiterLocation(currentBlock.getRelative(cd.getOppositeFace()).getLocation().add(0.5D, 0.0D, 0.5D));
-					list.add(currentBlock.getState());
-					setBlocks(list);
-					return;
-				}
-				while (currentBlock.getY() < 255){
-					ChimneyMaterial cm1 = getChimneyMaterial(currentBlock.getType());
-					BlockFace cd1 = getOutput(currentBlock.getState());
-					if (cm1 != null){
-						if (hasValidConnection(cd1, getInput(currentBlock.getRelative(cd1).getState()))){
-							list.add(currentBlock.getState());
-							currentBlock = currentBlock.getRelative(cd);
-						} else {
-							if (currentBlock.getLightFromSky() >= 14){
-								//setEmiterLocation(currentBlock.getRelative(cd1).getLocation().add(0.5D, 0.0D, 0.5D));
-								list.add(currentBlock.getState());
-								setBlocks(list);
-								return;
-							}
-							setBlocks(new ArrayList<BlockState>());
-							return;
-						}
-					} else {
-						if (currentBlock.getLightFromSky() >= 14) {
-							//setEmiterLocation(currentBlock.getLocation().add(0.5D, 0.0D, 0.5D));
-							setBlocks(list);
-							return;
-						}
-						setBlocks(new ArrayList<BlockState>());
-						return;
-					}
-				}
-			}
-		} else {
-			setBlocks(list);
-		}
 	}
 	
 	private void updateConduit(){
@@ -213,6 +165,18 @@ public class Chimney extends Structure {
 		}
 		return BlockFace.UP;
 	}
+	
+	public boolean isSafe(Player p){
+		if(getEmiterLocation().getBlock().getLightFromSky() >= 14 || p.getLocation().getBlock().getLightFromSky() >= 14){
+			return true;
+		} else {
+			if(getEmiterLocation().distance(p.getLocation()) < 5){
+				return false;
+			} else {
+				return true;
+			}
+		}
+	}
 
 	public void puff(){
 		if(!MangoStructures.useChimneys) return;
@@ -220,6 +184,10 @@ public class Chimney extends Structure {
 			if(!p.getLocation().getWorld().equals(getEmiterLocation().getWorld())) continue;
 			if(p.getLocation().distance(getEmiterLocation()) < 255){
 				sendSmoke(p);
+				if(!isSafe(p)){
+					p.damage(1);
+					p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 2));
+				}
 				//p.spawnParticle(Particle.SMOKE_LARGE, getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5, BlockFace.UP);
 				//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.LARGE_SMOKE, 0, 200);
 			}
