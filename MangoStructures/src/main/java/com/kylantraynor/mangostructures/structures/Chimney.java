@@ -177,7 +177,7 @@ public class Chimney extends Structure {
 			if (!stairs.isInverted()) {
 				return BlockFace.DOWN;
 			}
-			return stairs.getFacing();
+			return stairs.getFacing().getOppositeFace();
 		}
 		return null;
 	}
@@ -195,7 +195,7 @@ public class Chimney extends Structure {
 			if (stairs.isInverted()) {
 				return BlockFace.UP;
 			}
-			return stairs.getFacing();
+			return stairs.getFacing().getOppositeFace();
 		}
 		if ((state.getData() instanceof Furnace)){
 			Furnace fr = (Furnace)state.getData();
