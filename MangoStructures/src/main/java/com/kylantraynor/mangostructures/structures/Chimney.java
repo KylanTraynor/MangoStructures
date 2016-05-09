@@ -115,9 +115,8 @@ public class Chimney extends Structure {
 	private void updateConduit(){
 		Block currentBlock = getLocation().getBlock();
 		List<BlockState> list = new ArrayList<BlockState>();
-		while(getNextBlock(currentBlock) != null){
-			currentBlock = getNextBlock(currentBlock);
-			list.add(getNextBlock(currentBlock).getState());
+		while((currentBlock = getNextBlock(currentBlock)) != null){
+			list.add(currentBlock.getState());
 		}
 		setBlocks(list);
 	}
