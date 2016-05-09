@@ -27,7 +27,7 @@ public class Chimney extends Structure {
 	private Location emiterLocation;
 
 	static enum ChimneyMaterial {
-		BRICK,  STONEBRICK,  COBBLESTONE,  FURNACE;
+		BRICK,  STONEBRICK,  COBBLESTONE,  FURNACE, WALL;
 		private ChimneyMaterial() {}
 	}
 
@@ -87,6 +87,8 @@ public class Chimney extends Structure {
 			return ChimneyMaterial.BRICK;
 		case FURNACE: case BURNING_FURNACE: 
 			return ChimneyMaterial.FURNACE;
+		case COBBLE_WALL:
+			return ChimneyMaterial.WALL;
 		}
 		return null;
 	}
@@ -130,6 +132,9 @@ public class Chimney extends Structure {
 				return BlockFace.DOWN;
 			}
 			return stairs.getFacing().getOppositeFace();
+		}
+		if(state.getType() == Material.COBBLE_WALL){
+			return BlockFace.DOWN;
 		}
 		return null;
 	}
