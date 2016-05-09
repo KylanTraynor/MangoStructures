@@ -207,7 +207,7 @@ public class Chimney extends Structure {
 		case BLACK: 
 			for(Player p : Bukkit.getServer().getOnlinePlayers()){
 				if(!p.getLocation().getWorld().equals(getEmiterLocation().getWorld())) continue;
-				if(p.getLocation().distance(getEmiterLocation()) < 150){
+				if(p.getLocation().distance(getEmiterLocation()) < 255){
 					sendSmoke(p);
 					//p.spawnParticle(Particle.SMOKE_NORMAL, getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5, BlockFace.UP);
 					//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.LARGE_SMOKE, 0, 200);
@@ -218,7 +218,7 @@ public class Chimney extends Structure {
 		case WHITE: default: 
 			for(Player p : Bukkit.getServer().getOnlinePlayers()){
 				if(!p.getLocation().getWorld().equals(getEmiterLocation().getWorld())) continue;
-				if(p.getLocation().distance(getEmiterLocation()) < 150){
+				if(p.getLocation().distance(getEmiterLocation()) < 255){
 					sendSmoke(p);
 					//p.spawnParticle(Particle.SMOKE_LARGE, getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5, BlockFace.UP);
 					//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.LARGE_SMOKE, 0, 200);
