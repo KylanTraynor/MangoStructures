@@ -264,13 +264,16 @@ public class Chimney extends Structure {
 	}
 
 	private SmokeType getSmokeColor(){
-		if (!getBlocks().isEmpty()){
-			switch (((Furnace)(Furnace)((BlockState)getBlocks().get(0)).getData()).getItemType()){
-			case IRON_ORE: case GOLD_ORE: 
-				return SmokeType.BLACK;
-			}
+		Block furnaceBlock = getLocation().getBlock();
+		BlockState state = furnaceBlock.getState();
+		if(!(state instanceof Furnace)) return SmokeType.WHITE;
+		org.bukkit.block.Furnace furnace = (org.bukkit.block.Furnace) state;
+		if(furnace.getInventory().getSmelting() == null) return SmokeType.WHITE;
+		switch (furnace.getInventory().getSmelting().getType()){
+		case IRON_ORE: case GOLD_ORE: 
+			return SmokeType.BLACK;
+		default:
 			return SmokeType.WHITE;
 		}
-		return null;
 	}
 }
