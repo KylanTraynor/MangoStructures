@@ -39,8 +39,13 @@ public class Chimney extends Structure {
 		updateConduit();
 	}
 
-	public Location getEmiterLocation() { return this.emiterLocation; }
-	public void setEmiterLocation(Location emiterLocation) { this.emiterLocation = emiterLocation; }
+	public Location getEmiterLocation() {
+		if(getBlocks().size() == 0){
+			return getLocation().add(0.5,0.5,0.5);
+		} else {
+			return getBlocks().get(getBlocks().size() - 1).getLocation().add(0.5, 1, 0.5);
+		}
+	}
 
 	public boolean isSafe() {
 		if (!getBlocks().isEmpty()){
@@ -55,7 +60,7 @@ public class Chimney extends Structure {
 		return false;
 	}
 
-	private void updateConduit(){
+	private void updateConduit2(){
 		Block currentBlock = getLocation().getBlock();
 		ChimneyMaterial cm = getChimneyMaterial(currentBlock.getType());
 		BlockFace cd = getOutput(currentBlock.getState());
@@ -69,7 +74,7 @@ public class Chimney extends Structure {
 					list.add(currentBlock.getState());
 					currentBlock = currentBlock.getRelative(cd);
 				} else {
-					setEmiterLocation(currentBlock.getRelative(cd.getOppositeFace()).getLocation().add(0.5D, 0.0D, 0.5D));
+					//setEmiterLocation(currentBlock.getRelative(cd.getOppositeFace()).getLocation().add(0.5D, 0.0D, 0.5D));
 					list.add(currentBlock.getState());
 					setBlocks(list);
 					return;
@@ -83,7 +88,7 @@ public class Chimney extends Structure {
 							currentBlock = currentBlock.getRelative(cd);
 						} else {
 							if (currentBlock.getLightFromSky() >= 14){
-								setEmiterLocation(currentBlock.getRelative(cd1).getLocation().add(0.5D, 0.0D, 0.5D));
+								//setEmiterLocation(currentBlock.getRelative(cd1).getLocation().add(0.5D, 0.0D, 0.5D));
 								list.add(currentBlock.getState());
 								setBlocks(list);
 								return;
@@ -93,7 +98,7 @@ public class Chimney extends Structure {
 						}
 					} else {
 						if (currentBlock.getLightFromSky() >= 14) {
-							setEmiterLocation(currentBlock.getLocation().add(0.5D, 0.0D, 0.5D));
+							//setEmiterLocation(currentBlock.getLocation().add(0.5D, 0.0D, 0.5D));
 							setBlocks(list);
 							return;
 						}
@@ -106,7 +111,21 @@ public class Chimney extends Structure {
 			setBlocks(list);
 		}
 	}
+	
+	private void updateConduit(){
+		Block currentBlock = getLocation().getBlock();
+		List<BlockState> list = new ArrayList<BlockState>();
+		while(getNextBlock(currentBlock) != null){
+			currentBlock = getNextBlock(currentBlock);
+			list.add(getNextBlock(currentBlock).getState());
+		}
+		setBlocks(list);
+	}
 
+	private boolean isChimneyMaterial(Material m){
+		return getChimneyMaterial(m) != null;
+	}
+	
 	private ChimneyMaterial getChimneyMaterial(Material m){
 		switch (m){
 		case COBBLESTONE: case COBBLESTONE_STAIRS: 
@@ -121,7 +140,18 @@ public class Chimney extends Structure {
 		return null;
 	}
 	
-	
+	private Block getNextBlock(Block b){
+		
+		BlockFace out = getOutput(b.getState());
+		if(!isChimneyMaterial(b.getRelative(out).getType())) return null;
+		BlockFace in = getInput(b.getRelative(out).getState());
+		
+		if(hasValidConnection(out, in)){
+			return b.getRelative(out);
+		} else {
+			return null;
+		}
+	}
 	
 	private boolean hasValidConnection(BlockFace from, BlockFace to){
 		if(to == null) return true;
@@ -148,17 +178,7 @@ public class Chimney extends Structure {
 			if (!stairs.isInverted()) {
 				return BlockFace.DOWN;
 			}
-			switch (stairs.getAscendingDirection()){
-			case NORTH: 
-				return BlockFace.NORTH;
-			case SOUTH: 
-				return BlockFace.SOUTH;
-			case WEST: 
-				return BlockFace.WEST;
-			case EAST: 
-				return BlockFace.EAST;
-			}
-			return null;
+			return stairs.getFacing();
 		}
 		if ((state.getData() instanceof Furnace)){
 			return BlockFace.DOWN;
@@ -172,17 +192,7 @@ public class Chimney extends Structure {
 			if (stairs.isInverted()) {
 				return BlockFace.UP;
 			}
-			switch (stairs.getAscendingDirection()){
-			case NORTH: 
-				return BlockFace.NORTH;
-			case SOUTH: 
-				return BlockFace.SOUTH;
-			case WEST: 
-				return BlockFace.WEST;
-			case EAST: 
-				return BlockFace.EAST;
-			}
-			return null;
+			return stairs.getFacing();
 		}
 		if ((state.getData() instanceof Furnace)){
 			Furnace fr = (Furnace)state.getData();
@@ -238,6 +248,13 @@ public class Chimney extends Structure {
 		write(3, 0.5f).
 		write(4, 0.5f).
 		write(5, 0.5f);
+		switch(getSmokeColor()){
+		case BLACK:
+			smoke.getFloat().write(6, 2f);
+			break;
+		default:
+			break;
+		}
 		smoke.getIntegers().write(0,  15);
 		try {
 			MangoStructures.protocolManager.sendServerPacket(p, smoke);
