@@ -172,21 +172,25 @@ public class Chimney extends Structure {
 	}
 	
 	private BlockFace getInput(BlockState state){
-		if ((state.getData() instanceof Stairs)){
+		if (isStairs(state.getType())){
 			Stairs stairs = (Stairs)state.getData();
 			if (!stairs.isInverted()) {
 				return BlockFace.DOWN;
 			}
 			return stairs.getFacing();
 		}
-		if ((state.getData() instanceof Furnace)){
-			return BlockFace.DOWN;
-		}
 		return null;
 	}
 	
+	private boolean isStairs(Material m){
+		if(m == Material.COBBLESTONE_STAIRS) return true;
+		if(m == Material.SMOOTH_STAIRS) return true;
+		if(m == Material.BRICK_STAIRS) return true;
+		return false;
+	}
+	
 	private BlockFace getOutput(BlockState state){
-		if ((state.getData() instanceof Stairs)){
+		if (isStairs(state.getType())){
 			Stairs stairs = (Stairs)state.getData();
 			if (stairs.isInverted()) {
 				return BlockFace.UP;
@@ -212,28 +216,13 @@ public class Chimney extends Structure {
 
 	public void puff(){
 		if(!MangoStructures.useChimneys) return;
-		switch (getSmokeColor()){
-		case BLACK: 
-			for(Player p : Bukkit.getServer().getOnlinePlayers()){
-				if(!p.getLocation().getWorld().equals(getEmiterLocation().getWorld())) continue;
-				if(p.getLocation().distance(getEmiterLocation()) < 255){
-					sendSmoke(p);
-					//p.spawnParticle(Particle.SMOKE_NORMAL, getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5, BlockFace.UP);
-					//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.LARGE_SMOKE, 0, 200);
-				}
+		for(Player p : Bukkit.getServer().getOnlinePlayers()){
+			if(!p.getLocation().getWorld().equals(getEmiterLocation().getWorld())) continue;
+			if(p.getLocation().distance(getEmiterLocation()) < 255){
+				sendSmoke(p);
+				//p.spawnParticle(Particle.SMOKE_LARGE, getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5, BlockFace.UP);
+				//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.LARGE_SMOKE, 0, 200);
 			}
-			//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.LARGE_SMOKE, 0, 200);
-			break;
-		case WHITE: default: 
-			for(Player p : Bukkit.getServer().getOnlinePlayers()){
-				if(!p.getLocation().getWorld().equals(getEmiterLocation().getWorld())) continue;
-				if(p.getLocation().distance(getEmiterLocation()) < 255){
-					sendSmoke(p);
-					//p.spawnParticle(Particle.SMOKE_LARGE, getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5, BlockFace.UP);
-					//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.LARGE_SMOKE, 0, 200);
-				}
-			}
-			//getEmiterLocation().getWorld().playEffect(getEmiterLocation(), Effect.CLOUD, 0, 200);
 		}
 	}
 	
