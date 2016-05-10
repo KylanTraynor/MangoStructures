@@ -3,10 +3,15 @@ package com.kylantraynor.mangostructures;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.md_5.bungee.api.ChatColor;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.PluginManager;
@@ -17,11 +22,13 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.kylantraynor.mangostructures.commands.ChimneyCommand;
 import com.kylantraynor.mangostructures.structures.Chimney;
+import com.kylantraynor.mangostructures.structures.Kiln;
 import com.kylantraynor.mangostructures.structures.Structure;
 
 public class MangoStructures extends JavaPlugin implements Listener{
 	private List<Structure> structures = new ArrayList<Structure>();
 	private List<Chimney> activeChimneys = new ArrayList<Chimney>();
+	private List<Kiln> allKilns = new ArrayList<Kiln>();
 	public static ProtocolManager protocolManager;
 	public static boolean useChimneys = true;
 	
@@ -43,6 +50,13 @@ public class MangoStructures extends JavaPlugin implements Listener{
 						activeChimneys.remove(c);
 					}
 				}
+				for(Kiln k : allKilns.toArray(new Kiln[allKilns.size()])){
+					if(k.isValidShape()){
+						k.update();
+					} else {
+						allKilns.remove(k);
+					}
+				}
 			}
 		};
 		bk.runTaskTimer(this, 10L, 10L);
@@ -53,7 +67,30 @@ public class MangoStructures extends JavaPlugin implements Listener{
 	public void onDisable() {}
 
 	@EventHandler
-	public void onPlayerInteract(PlayerInteractEvent event) {}
+	public void onPlayerInteract(PlayerInteractEvent event){
+		for(Kiln k : allKilns){
+			if(k.isInside(event.getClickedBlock().getLocation())){
+				if(event.getAction() == Action.RIGHT_CLICK_BLOCK){
+					//TODO stuff with Kiln
+				}
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent event){
+		if(event.getPlayer() != null){
+			if(event.getBlock().getType() == Material.IRON_FENCE){
+				if(event.getBlock().getRelative(BlockFace.DOWN).getType() == Material.CHEST){
+					Kiln k = new Kiln(event.getBlock().getRelative(BlockFace.DOWN).getLocation());
+					if(k.isValidShape()){
+						event.getPlayer().sendMessage(ChatColor.GREEN + "Kiln built!");
+						allKilns.add(k);
+					}
+				}
+			}
+		}
+	}
 
 	@EventHandler
 	public void onFurnaceBurn(FurnaceBurnEvent e)
@@ -62,6 +99,7 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		for(Chimney ch : activeChimneys){
 			if(ch.getLocation().getWorld().equals(c.getLocation().getWorld())){
 				if(ch.getLocation().distance(c.getLocation()) < 1.0){
+					ch.updateConduit();
 					return;
 				}
 			}
