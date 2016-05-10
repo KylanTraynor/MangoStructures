@@ -40,6 +40,8 @@ public class Kiln extends Structure implements InventoryHolder{
 		if(tryConsumeFuel()){
 			getNetherrackLocation().getBlock().getRelative(BlockFace.UP).setType(Material.FIRE);
 			tryMelt();
+		} else {
+			getNetherrackLocation().getBlock().getRelative(BlockFace.UP).setType(Material.AIR);
 		}
 	}
 	
