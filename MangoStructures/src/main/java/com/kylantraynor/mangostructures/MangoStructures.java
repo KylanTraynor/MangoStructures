@@ -68,10 +68,10 @@ public class MangoStructures extends JavaPlugin implements Listener{
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event){
-		for(Kiln k : allKilns){
-			if(k.isInside(event.getClickedBlock().getLocation())){
-				if(event.getAction() == Action.RIGHT_CLICK_BLOCK){
-					//TODO stuff with Kiln
+		if(event.getAction() == Action.RIGHT_CLICK_BLOCK){
+			for(Kiln k : allKilns){
+				if(k.isInside(event.getClickedBlock().getLocation())){
+					
 				}
 			}
 		}
