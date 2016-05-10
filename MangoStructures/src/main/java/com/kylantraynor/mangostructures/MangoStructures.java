@@ -1,13 +1,21 @@
 package com.kylantraynor.mangostructures;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.md_5.bungee.api.ChatColor;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -62,9 +70,66 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		bk.runTaskTimer(this, 10L, 10L);
 		
 		this.getCommand("Chimney").setExecutor(new ChimneyCommand());
+		
+		reloadKilns();
 	}
 	
-	public void onDisable() {}
+	private void reloadKilns() {
+		Kiln.cookingTimes.put(Material.COAL, 9);
+		Kiln.cookingTimes.put(Material.COAL_BLOCK, 81);
+		Kiln.cookingTimes.put(Material.LOG, 3);
+		Kiln.cookingTimes.put(Material.LOG_2, 3);
+		File f = new File(getDataFolder(), "Kilns.yml");
+		if(!f.exists()){
+			try {
+				f.mkdirs();
+				f.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return;
+		}
+		YamlConfiguration config = new YamlConfiguration();
+		try {
+			config.load(f);
+			allKilns = new ArrayList<Kiln>();
+			int i = 0;
+			while(config.contains("" + i)){
+				World w = Bukkit.getServer().getWorld(config.getString(""+i+".world"));
+				int x = config.getInt(""+i+".x");
+				int y = config.getInt(""+i+".y");
+				int z = config.getInt(""+i+".z");
+				Location l = new Location(w, x, y, z);
+				Kiln k = new Kiln(l);
+				if(k.isValidShape()){
+					allKilns.add(k);
+				}
+				i++;
+			}
+		} catch (IOException | InvalidConfigurationException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void saveAllKilns(){
+		YamlConfiguration config = new YamlConfiguration();
+		for(int i = 0; i < allKilns.size(); i++){
+			config.set(""+i+".world", allKilns.get(i).getLocation().getWorld().getName());
+			config.set(""+i+".x", allKilns.get(i).getLocation().getBlockX());
+			config.set(""+i+".y", allKilns.get(i).getLocation().getBlockY());
+			config.set(""+i+".z", allKilns.get(i).getLocation().getBlockZ());
+		}
+		File f = new File(getDataFolder(), "Kilns.yml");
+		try {
+			config.save(f);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void onDisable() {
+		saveAllKilns();
+	}
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event){
@@ -73,6 +138,8 @@ public class MangoStructures extends JavaPlugin implements Listener{
 				if(k.isInside(event.getClickedBlock().getLocation())){
 					if(event.getClickedBlock().getType() == Material.IRON_TRAPDOOR){
 						k.openInventory(event.getPlayer());
+					} else {
+						event.getPlayer().sendMessage(ChatColor.GRAY + "This is a Kiln.");
 					}
 				}
 			}
