@@ -214,7 +214,7 @@ public class Kiln extends Structure implements InventoryHolder{
 	}
 	
 	private ItemStack getIngotWorth(ItemStack item) {
-		float durabilityPercent = item.getDurability() / item.getType().getMaxDurability();
+		float durabilityPercent;
 		if(item.getType().getMaxDurability() <= 0){
 			durabilityPercent = 1.0f;
 		} else {
