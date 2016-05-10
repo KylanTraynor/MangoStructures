@@ -71,7 +71,9 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		if(event.getAction() == Action.RIGHT_CLICK_BLOCK){
 			for(Kiln k : allKilns){
 				if(k.isInside(event.getClickedBlock().getLocation())){
-					
+					if(event.getClickedBlock().getType() == Material.IRON_TRAPDOOR){
+						k.openInventory(event.getPlayer());
+					}
 				}
 			}
 		}

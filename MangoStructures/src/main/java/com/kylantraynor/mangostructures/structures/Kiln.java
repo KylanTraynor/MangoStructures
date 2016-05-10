@@ -1,13 +1,24 @@
 package com.kylantraynor.mangostructures.structures;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
 
-public class Kiln extends Structure{
+public class Kiln extends Structure implements InventoryHolder{
+	
+	static public Map<Material, Integer> cookingTimes = new HashMap<Material, Integer>();
 	
 	private String shape;
 	private Location netherrackLocation;
@@ -19,14 +30,27 @@ public class Kiln extends Structure{
 	}
 	
 	public void update(){
+		if(!isValidShape()) return;
 		if(chimney == null){
 			chimney = new Chimney(getChimneyStartLocation());
 		}
 		if(isActive()){
 			chimney.puff(3);
 		}
+		if(tryConsumeFuel()){
+			getNetherrackLocation().getBlock().getRelative(BlockFace.UP).setType(Material.FIRE);
+			tryMelt();
+		}
 	}
 	
+	private void tryMelt() {
+		List<Integer> ilist = getMeltableSlots();
+		int i = (int) Math.floor((Math.random() * ilist.size()));
+		if(isMeltable(getInventory().getItem(i))){
+			tryTransform(i);
+		}
+	}
+
 	private boolean isActive() {
 		return getNetherrackLocation().getBlock().getRelative(BlockFace.UP).getType() == Material.FIRE;
 	}
@@ -100,5 +124,184 @@ public class Kiln extends Structure{
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public Inventory getInventory() {
+		Block chestBlock = getLocation().getBlock();
+		if(chestBlock.getType() == Material.CHEST){
+			BlockState state = chestBlock.getState();
+			if(state instanceof Chest){
+				Chest chest = (Chest) state;
+				return chest.getBlockInventory();
+			}
+		}
+		return null;
+	}
+
+	public void openInventory(Player p) {
+		p.openInventory(getInventory());
+	}
+	
+	public void tryTransform(int slot){
+		if(getInventory().getItem(slot) != null){
+			if(Math.random() < 0.1){
+				if(getInventory().getItem(slot).getAmount() > 1){
+					getInventory().getItem(slot).setAmount(getInventory().getItem(slot).getAmount() - 1);
+				} else {
+					getInventory().clear(slot);;
+				}
+				add(getIngotWorth(getInventory().getItem(slot)));
+			}
+		}
+	}
+	
+	public void add(ItemStack item){
+		while(item.getAmount() > 0){
+			for( int i = 0 ; i < getInventory().getContents().length; i++){
+				if(getInventory().getContents()[i] != null){
+					if(areSimilar(getInventory().getContents()[i], item)){
+						if(getInventory().getContents()[i].getAmount() <= item.getType().getMaxStackSize()){
+							getInventory().getContents()[i].setAmount(getInventory().getContents()[i].getAmount() + 1);
+							item.setAmount(item.getAmount() - 1);
+						} else {
+							continue;
+						}
+						break;
+					}
+				} else {
+					getInventory().setItem(i, item);
+					return;
+				}
+			}
+		}
+	}
+	
+	public void remove(ItemStack item, int amount){
+		while(amount > 0){
+			for( int i = 0 ; i < getInventory().getContents().length; i++){
+				if(getInventory().getContents()[i] != null){
+					if(areSimilar(getInventory().getContents()[i], item)){
+						if(getInventory().getContents()[i].getAmount() > 1){
+							getInventory().getContents()[i].setAmount(getInventory().getContents()[i].getAmount() - 1);
+							amount -= 1;
+						} else {
+							getInventory().clear(i);
+						}
+						break;
+					}
+				}
+			}
+		}
+	}
+	
+	public boolean areSimilar(ItemStack item1, ItemStack item2){
+		if(item1.getType() == item2.getType()){
+			if(item1.getData() == item2.getData()){
+				if(item1.getItemMeta() != null && item2.getItemMeta() != null){
+					if(item1.getItemMeta().getDisplayName().equalsIgnoreCase(item2.getItemMeta().getDisplayName())){
+						if(item1.getItemMeta().getLore().size() == item2.getItemMeta().getLore().size()){
+							return true;
+						}
+					}
+				} else if(item1.getItemMeta() == null && item2.getItemMeta() == null){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	private ItemStack getIngotWorth(ItemStack item) {
+		float durabilityPercent = item.getDurability() / item.getType().getMaxDurability();
+		switch(item.getType()){
+		case IRON_CHESTPLATE:
+			return new ItemStack(Material.IRON_INGOT, (int) (8 * durabilityPercent));
+		case IRON_LEGGINGS:
+			return new ItemStack(Material.IRON_INGOT, (int) (7 * durabilityPercent));
+		case IRON_HELMET:
+			return new ItemStack(Material.IRON_INGOT, (int) (5 * durabilityPercent));
+		case IRON_BOOTS: 
+			return new ItemStack(Material.IRON_INGOT, (int) (4 * durabilityPercent));
+		case IRON_ORE:
+			return new ItemStack(Material.IRON_INGOT, 2);
+		case IRON_SPADE:
+			return new ItemStack(Material.IRON_INGOT, (int) (1 * durabilityPercent));
+		case IRON_PICKAXE:
+			return new ItemStack(Material.IRON_INGOT, (int) (3 * durabilityPercent));
+		case IRON_SWORD:
+			return new ItemStack(Material.IRON_INGOT, (int) (2 * durabilityPercent));
+		case IRON_HOE:
+			return new ItemStack(Material.IRON_INGOT, (int) (2 * durabilityPercent));
+		case IRON_AXE:
+			return new ItemStack(Material.IRON_INGOT, (int) (3 * durabilityPercent));
+		case GOLD_CHESTPLATE:
+			return new ItemStack(Material.GOLD_INGOT, (int) (8 * durabilityPercent));
+		case GOLD_LEGGINGS:
+			return new ItemStack(Material.GOLD_INGOT, (int) (7 * durabilityPercent));
+		case GOLD_HELMET:
+			return new ItemStack(Material.GOLD_INGOT, (int) (5 * durabilityPercent));
+		case GOLD_BOOTS: 
+			return new ItemStack(Material.GOLD_INGOT, (int) (4 * durabilityPercent));
+		case GOLD_ORE:
+			return new ItemStack(Material.GOLD_INGOT, 2);
+		case GOLD_SPADE:
+			return new ItemStack(Material.GOLD_INGOT, (int) (1 * durabilityPercent));
+		case GOLD_PICKAXE: 
+			return new ItemStack(Material.GOLD_INGOT, (int) (3 * durabilityPercent));
+		case GOLD_SWORD:
+			return new ItemStack(Material.GOLD_INGOT, (int) (2 * durabilityPercent));
+		case GOLD_HOE:
+			return new ItemStack(Material.GOLD_INGOT, (int) (2 * durabilityPercent));
+		case GOLD_AXE:
+			return new ItemStack(Material.GOLD_INGOT, (int) (3 * durabilityPercent));
+		default:
+			break;
+		}
+		return null;
+	}
+
+	public List<Integer> getMeltableSlots(){
+		List<Integer> list = new ArrayList<Integer>();
+		for(int i = 0; i < getInventory().getSize(); i++){
+			if(getInventory().getItem(i) != null){
+				if(isMeltable(getInventory().getItem(i))){
+					list.add(i);
+				}
+			}
+		}
+		return list;
+	}
+
+	private boolean isMeltable(ItemStack item) {
+		return getIngotWorth(item) != null;
+	}
+	
+	private boolean tryConsumeFuel(){
+		int slot = getFuelSlot();
+		if(slot >= 0){
+			
+			if(cookingTimes.containsKey(getInventory().getItem(slot))){
+				if(Math.random() * cookingTimes.get(getInventory().getItem(slot).getType()) < 0.10){
+					remove(getInventory().getItem(slot), 1);
+					return true;
+				} else {
+					return true;
+				}
+			}
+			
+		}
+		return false;
+	}
+
+	private int getFuelSlot() {
+		for(int i = 0; i < getInventory().getSize(); i++){
+			if(getInventory().getItem(i) != null){
+				if(getInventory().getItem(i).getType().isBurnable()){
+					return i;
+				}
+			}
+		}
+		return -1;
 	}
 }
