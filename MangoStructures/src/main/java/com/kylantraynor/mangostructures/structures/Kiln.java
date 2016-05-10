@@ -21,7 +21,6 @@ public class Kiln extends Structure implements InventoryHolder{
 	static public Map<Material, Integer> cookingTimes = new HashMap<Material, Integer>();
 	
 	private String shape;
-	private Location netherrackLocation;
 	private Chimney chimney;
 	
 	public Kiln(Location l){
@@ -106,7 +105,6 @@ public class Kiln extends Structure implements InventoryHolder{
 						break;
 					case NETHERRACK:
 						shape += "n";
-						netherrackLocation = currentLocation.clone();
 						break;
 					default:
 						shape += " ";
@@ -283,8 +281,8 @@ public class Kiln extends Structure implements InventoryHolder{
 		int slot = getFuelSlot();
 		if(slot >= 0){
 			
-			if(cookingTimes.containsKey(getInventory().getItem(slot))){
-				if(Math.random() * cookingTimes.get(getInventory().getItem(slot).getType()) < 0.10){
+			if(cookingTimes.containsKey(getInventory().getItem(slot).getType())){
+				if(Math.random() * (double)cookingTimes.get(getInventory().getItem(slot).getType()) < 0.10){
 					remove(getInventory().getItem(slot), 1);
 					return true;
 				} else {
@@ -299,7 +297,7 @@ public class Kiln extends Structure implements InventoryHolder{
 	private int getFuelSlot() {
 		for(int i = 0; i < getInventory().getSize(); i++){
 			if(getInventory().getItem(i) != null){
-				if(getInventory().getItem(i).getType().isBurnable()){
+				if(cookingTimes.containsKey(getInventory().getItem(i).getType())){
 					return i;
 				}
 			}
