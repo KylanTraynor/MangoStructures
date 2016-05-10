@@ -77,7 +77,7 @@ public class Kiln extends Structure implements InventoryHolder{
 		return getLocation().clone().add(0,-4,0);
 	}
 	
-	private void loadShape(){
+	public void loadShape(){
 		// GetLocation() must return the location of the chest
 		// Gets the height of the iron fence
 		int maxHeight = getLocation().getBlockY() + 1;

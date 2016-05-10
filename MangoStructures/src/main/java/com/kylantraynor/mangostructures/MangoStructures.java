@@ -19,6 +19,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -147,7 +148,17 @@ public class MangoStructures extends JavaPlugin implements Listener{
 	}
 	
 	@EventHandler
+	public void onBlockBreak(BlockBreakEvent event){
+		for(Kiln k : allKilns){
+			if(k.isInside(event.getBlock().getLocation())) k.loadShape();
+		}
+	}
+	
+	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event){
+		for(Kiln k : allKilns){
+			if(k.isInside(event.getBlock().getLocation())) k.loadShape();
+		}
 		if(event.getPlayer() != null){
 			if(event.getBlock().getType() == Material.IRON_FENCE){
 				if(event.getBlock().getRelative(BlockFace.DOWN).getType() == Material.CHEST){
