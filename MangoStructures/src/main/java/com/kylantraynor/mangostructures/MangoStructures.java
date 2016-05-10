@@ -45,7 +45,7 @@ public class MangoStructures extends JavaPlugin implements Listener{
 				}
 			}
 		};
-		bk.runTaskTimer(this, 10L, 20L);
+		bk.runTaskTimer(this, 10L, 10L);
 		
 		this.getCommand("Chimney").setExecutor(new ChimneyCommand());
 	}
@@ -59,9 +59,14 @@ public class MangoStructures extends JavaPlugin implements Listener{
 	public void onFurnaceBurn(FurnaceBurnEvent e)
 	{
 		Chimney c = new Chimney(e.getBlock().getLocation());
-		if (!activeChimneys.contains(c)) {
-			activeChimneys.add(c);
+		for(Chimney ch : activeChimneys){
+			if(ch.getLocation().getWorld().equals(c.getLocation().getWorld())){
+				if(ch.getLocation().distance(c.getLocation()) < 1.0){
+					return;
+				}
+			}
 		}
+		activeChimneys.add(c);
 	}
 
 	public Structure getStructure(Block block)

@@ -184,11 +184,15 @@ public class Chimney extends Structure {
 	}
 
 	public void puff(){
+		puff(1);
+	}
+	
+	public void puff(int intensity){
 		if(!MangoStructures.useChimneys) return;
 		for(Player p : Bukkit.getServer().getOnlinePlayers()){
 			if(!p.getLocation().getWorld().equals(getEmiterLocation().getWorld())) continue;
 			if(p.getLocation().distance(getEmiterLocation()) < 255){
-				sendSmoke(p);
+				sendSmoke(p, intensity);
 				if(!isSafe(p)){
 					p.damage(1);
 					if(p.getLocation().distance(getEmiterLocation()) < 2){
@@ -201,16 +205,16 @@ public class Chimney extends Structure {
 		}
 	}
 	
-	private void sendSmoke(Player p){
+	private void sendSmoke(Player p, int intensity){
 		PacketContainer smoke = MangoStructures.protocolManager.createPacket(PacketType.Play.Server.WORLD_PARTICLES);
 		smoke.getIntegers().write(0, 12);
 		smoke.getBooleans().write(0, true);
 		smoke.getFloat().write(0,  (float) getEmiterLocation().getX()).
-		write(1, (float) getEmiterLocation().getY()).
+		write(1, (float) getEmiterLocation().getY() + (0.25f * intensity)).
 		write(2, (float) getEmiterLocation().getZ()).
-		write(3, 0.25f).
-		write(4, 0.5f).
-		write(5, 0.25f);
+		write(3, 0.25f * intensity).
+		write(4, 0.5f * intensity).
+		write(5, 0.25f * intensity);
 		switch(getSmokeColor()){
 		case BLACK:
 			smoke.getFloat().write(6, 0f);
@@ -218,7 +222,7 @@ public class Chimney extends Structure {
 		default:
 			break;
 		}
-		smoke.getIntegers().write(0,  30);
+		smoke.getIntegers().write(0,  30 * intensity);
 		try {
 			MangoStructures.protocolManager.sendServerPacket(p, smoke);
 		} catch (InvocationTargetException e) {
