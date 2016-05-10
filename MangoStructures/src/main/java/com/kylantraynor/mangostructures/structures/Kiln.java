@@ -34,6 +34,7 @@ public class Kiln extends Structure implements InventoryHolder{
 			chimney = new Chimney(getChimneyStartLocation());
 		}
 		if(isActive()){
+			chimney.updateConduit();
 			chimney.puff(3);
 		}
 		if(tryConsumeFuel()){
