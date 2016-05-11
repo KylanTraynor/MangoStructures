@@ -68,7 +68,7 @@ public class MangoStructures extends JavaPlugin implements Listener{
 				}
 			}
 		};
-		bk.runTaskTimer(this, 10L, 10L);
+		bk.runTaskTimer(this, 10L, 20L);
 		
 		this.getCommand("Chimney").setExecutor(new ChimneyCommand());
 		
