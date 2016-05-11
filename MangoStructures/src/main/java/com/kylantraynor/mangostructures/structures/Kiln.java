@@ -22,6 +22,7 @@ public class Kiln extends Structure implements InventoryHolder{
 	static public Map<Material, Integer> ingotWorth = new HashMap<Material, Integer>();
 	static public Map<Material, Material> ingotKind = new HashMap<Material, Material>();
 	
+	
 	public static void register(Material m, Material result, int amount){
 		ingotWorth.put(m, amount);
 		ingotKind.put(m, result);
@@ -29,7 +30,7 @@ public class Kiln extends Structure implements InventoryHolder{
 	
 	private String shape;
 	private Chimney chimney;
-	
+	private int speed = 2;
 	
 	
 	public Kiln(Location l){
@@ -157,8 +158,8 @@ public class Kiln extends Structure implements InventoryHolder{
 		if(isMeltable(getInventory().getItem(slot))){
 			ItemStack is = getInventory().getItem(slot);
 			if(is.getType().getMaxDurability() > 0){
-				is.setDurability((short) (is.getDurability() + 1));
-				if(Math.random() * is.getType().getMaxDurability() < 1 * ingotWorth.get(is.getType())){
+				is.setDurability((short) (is.getDurability() + speed));
+				if(Math.random() * (is.getType().getMaxDurability()) < speed * ingotWorth.get(is.getType())){
 					add(ingotKind.get(is.getType()), ingotWorth.get(is.getType()));
 				}
 				if(is.getDurability() >= is.getType().getMaxDurability()){
