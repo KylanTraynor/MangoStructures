@@ -57,6 +57,9 @@ public class Kiln extends Structure implements InventoryHolder{
 	
 	private void tryMelt() {
 		List<Integer> ilist = getMeltableSlots();
+		if(ilist.size() == 0){
+			return;
+		}
 		int i = (int) Math.floor((Math.random() * ilist.size()));
 		if(isMeltable(getInventory().getItem(ilist.get(i)))){
 			tryTransform(ilist.get(i));
