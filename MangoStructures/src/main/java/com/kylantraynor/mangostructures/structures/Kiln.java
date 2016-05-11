@@ -19,9 +19,18 @@ import org.bukkit.inventory.ItemStack;
 public class Kiln extends Structure implements InventoryHolder{
 	
 	static public Map<Material, Integer> cookingTimes = new HashMap<Material, Integer>();
+	static public Map<Material, Integer> ingotWorth = new HashMap<Material, Integer>();
+	static public Map<Material, Material> ingotKind = new HashMap<Material, Material>();
+	
+	public static void register(Material m, Material result, int amount){
+		ingotWorth.put(m, amount);
+		ingotKind.put(m, result);
+	}
 	
 	private String shape;
 	private Chimney chimney;
+	
+	
 	
 	public Kiln(Location l){
 		super(l);
@@ -145,13 +154,9 @@ public class Kiln extends Structure implements InventoryHolder{
 	}
 	
 	public void tryTransform(int slot){
-		if(getInventory().getItem(slot) != null){
-			if(Math.random() < 0.1){
-				if(getInventory().getItem(slot).getType().toString().startsWith("IRON_")){
-					add(Material.IRON_INGOT, getIngotWorth(getInventory().getItem(slot)));
-				} else if(getInventory().getItem(slot).getType().toString().startsWith("GOLD_")){
-					add(Material.GOLD_INGOT, getIngotWorth(getInventory().getItem(slot)));
-				}
+		if(isMeltable(getInventory().getItem(slot))){
+			if(Math.random() < 0.2){
+				add(ingotKind.get(getInventory().getItem(slot)), getIngotWorth(getInventory().getItem(slot)));
 				if(getInventory().getItem(slot).getAmount() > 1){
 					getInventory().getItem(slot).setAmount(getInventory().getItem(slot).getAmount() - 1);
 				} else {
@@ -222,51 +227,7 @@ public class Kiln extends Structure implements InventoryHolder{
 		} else {
 			durabilityPercent = Math.max((item.getType().getMaxDurability() - item.getDurability()) / item.getType().getMaxDurability(), 0);
 		}
-		switch(item.getType()){
-		case IRON_CHESTPLATE:
-			return (int) (8 * durabilityPercent);
-		case IRON_LEGGINGS:
-			return (int) (7 * durabilityPercent);
-		case IRON_HELMET:
-			return (int) (5 * durabilityPercent);
-		case IRON_BOOTS: 
-			return (int) (4 * durabilityPercent);
-		case IRON_ORE:
-			return 2;
-		case IRON_SPADE:
-			return (int) (1 * durabilityPercent);
-		case IRON_PICKAXE:
-			return (int) (3 * durabilityPercent);
-		case IRON_SWORD:
-			return (int) (2 * durabilityPercent);
-		case IRON_HOE:
-			return (int) (2 * durabilityPercent);
-		case IRON_AXE:
-			return (int) (3 * durabilityPercent);
-		case GOLD_CHESTPLATE:
-			return (int) (8 * durabilityPercent);
-		case GOLD_LEGGINGS:
-			return (int) (7 * durabilityPercent);
-		case GOLD_HELMET:
-			return (int) (5 * durabilityPercent);
-		case GOLD_BOOTS: 
-			return (int) (4 * durabilityPercent);
-		case GOLD_ORE:
-			return 2;
-		case GOLD_SPADE:
-			return (int) (1 * durabilityPercent);
-		case GOLD_PICKAXE: 
-			return (int) (3 * durabilityPercent);
-		case GOLD_SWORD:
-			return (int) (2 * durabilityPercent);
-		case GOLD_HOE:
-			return (int) (2 * durabilityPercent);
-		case GOLD_AXE:
-			return (int) (3 * durabilityPercent);
-		default:
-			break;
-		}
-		return 0;
+		return (int)Math.floor(ingotWorth.get(item.getType()) * durabilityPercent);
 	}
 
 	public List<Integer> getMeltableSlots(){
@@ -283,12 +244,7 @@ public class Kiln extends Structure implements InventoryHolder{
 
 	private boolean isMeltable(ItemStack item) {
 		if(item == null) return false;
-		if(item.getType() == Material.IRON_INGOT) return false;
-		if(item.getType() == Material.GOLD_INGOT) return false;
-		if(item.getType() == Material.GOLD_NUGGET) return false;
-		if(item.getType().toString().startsWith("IRON_")) return true;
-		if(item.getType().toString().startsWith("GOLD_")) return true;
-		return false;
+		return ingotWorth.containsKey(item.getType());
 	}
 	
 	private boolean tryConsumeFuel(){
@@ -296,7 +252,7 @@ public class Kiln extends Structure implements InventoryHolder{
 		if(slot >= 0){
 			
 			if(cookingTimes.containsKey(getInventory().getItem(slot).getType())){
-				if(Math.random() * (double)cookingTimes.get(getInventory().getItem(slot).getType()) < 0.10){
+				if(Math.random() * (double)cookingTimes.get(getInventory().getItem(slot).getType()) < 0.20){
 					if(getInventory().getItem(slot).getAmount() > 1){
 						getInventory().getItem(slot).setAmount(getInventory().getItem(slot).getAmount() - 1);
 					} else {

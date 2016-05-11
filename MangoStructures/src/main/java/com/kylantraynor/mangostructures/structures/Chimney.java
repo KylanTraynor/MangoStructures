@@ -222,7 +222,7 @@ public class Chimney extends Structure {
 		default:
 			break;
 		}
-		smoke.getIntegers().write(0,  30 * intensity);
+		smoke.getIntegers().write(0,  30 * (intensity * intensity));
 		try {
 			MangoStructures.protocolManager.sendServerPacket(p, smoke);
 		} catch (InvocationTargetException e) {
