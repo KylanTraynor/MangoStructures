@@ -147,15 +147,15 @@ public class Kiln extends Structure implements InventoryHolder{
 	public void tryTransform(int slot){
 		if(getInventory().getItem(slot) != null){
 			if(Math.random() < 0.1){
-				if(getInventory().getItem(slot).getAmount() > 1){
-					getInventory().getItem(slot).setAmount(getInventory().getItem(slot).getAmount() - 1);
-				} else {
-					getInventory().clear(slot);;
-				}
 				if(getInventory().getItem(slot).getType().toString().startsWith("IRON_")){
 					add(Material.IRON_INGOT, getIngotWorth(getInventory().getItem(slot)));
 				} else if(getInventory().getItem(slot).getType().toString().startsWith("GOLD_")){
 					add(Material.GOLD_INGOT, getIngotWorth(getInventory().getItem(slot)));
+				}
+				if(getInventory().getItem(slot).getAmount() > 1){
+					getInventory().getItem(slot).setAmount(getInventory().getItem(slot).getAmount() - 1);
+				} else {
+					getInventory().remove(getInventory().getItem(slot));;
 				}
 			}
 		}
@@ -176,8 +176,8 @@ public class Kiln extends Structure implements InventoryHolder{
 		for( int i = 0 ; i < getInventory().getContents().length; i++){
 			if(getInventory().getContents()[i] != null){
 				if(areSimilar(getInventory().getContents()[i], item)){
-					if(getInventory().getContents()[i].getAmount() <= item.getType().getMaxStackSize()){
-						getInventory().getContents()[i].setAmount(getInventory().getContents()[i].getAmount() + 1);
+					if(getInventory().getItem(i).getAmount() <= item.getType().getMaxStackSize()){
+						getInventory().getItem(i).setAmount(getInventory().getItem(i).getAmount() + 1);
 						return;
 					}
 				}
@@ -191,12 +191,12 @@ public class Kiln extends Structure implements InventoryHolder{
 	public void remove(ItemStack item){
 		if(!getInventory().contains(item.getType())) return;
 		for( int i = 0 ; i < getInventory().getContents().length; i++){
-			if(getInventory().getContents()[i] != null){
-				if(areSimilar(getInventory().getContents()[i], item)){
-					if(getInventory().getContents()[i].getAmount() > 1){
-						getInventory().getContents()[i].setAmount(getInventory().getContents()[i].getAmount() - 1);
+			if(getInventory().getItem(i) != null){
+				if(areSimilar(getInventory().getItem(i), item)){
+					if(getInventory().getItem(i).getAmount() > 1){
+						getInventory().getItem(i).setAmount(getInventory().getItem(i).getAmount() - 1);
 					} else {
-						getInventory().clear(i);
+						getInventory().remove(getInventory().getItem(i));
 					}
 					break;
 				}
