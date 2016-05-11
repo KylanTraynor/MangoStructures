@@ -282,6 +282,7 @@ public class Kiln extends Structure implements InventoryHolder{
 	}
 
 	private boolean isMeltable(ItemStack item) {
+		if(item == null) return false;
 		if(item.getType() == Material.IRON_INGOT) return false;
 		if(item.getType() == Material.GOLD_INGOT) return false;
 		if(item.getType() == Material.GOLD_NUGGET) return false;
