@@ -14,7 +14,7 @@ public class Structure {
 		setLocation(l);
 	}
   
-	public Location getLocation() { return this.location; }
+	public Location getLocation() { return this.location.clone(); }
 	public void setLocation(Location location) { this.location = location; }
   
 	public List<BlockState> getBlocks() { return this.blocks; }
