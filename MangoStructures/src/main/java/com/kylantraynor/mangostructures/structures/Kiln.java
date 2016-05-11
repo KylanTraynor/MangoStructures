@@ -162,41 +162,22 @@ public class Kiln extends Structure implements InventoryHolder{
 	}
 	
 	public void add(Material m, int amount){
-		add(new ItemStack(m), amount);
-	}
-	
-	public void add(ItemStack item, int amount){
-		while(amount > 0){
-			add(item);
-			amount -= 1;
-		}
+		add(new ItemStack(m, amount));
 	}
 	
 	public void add(ItemStack item){
-		for( int i = 0 ; i < getInventory().getContents().length; i++){
-			if(getInventory().getContents()[i] != null){
-				if(areSimilar(getInventory().getContents()[i], item)){
-					if(getInventory().getItem(i).getAmount() <= item.getType().getMaxStackSize()){
-						getInventory().getItem(i).setAmount(getInventory().getItem(i).getAmount() + 1);
-						return;
-					}
-				}
-			} else {
-				getInventory().setItem(i, item);
-				return;
-			}
-		}
+		getInventory().addItem(item);
 	}
 	
 	public void remove(ItemStack item){
 		if(!getInventory().contains(item.getType())) return;
-		for( int i = 0 ; i < getInventory().getContents().length; i++){
+		for( int i = 0 ; i < getInventory().getSize(); i++){
 			if(getInventory().getItem(i) != null){
 				if(areSimilar(getInventory().getItem(i), item)){
 					if(getInventory().getItem(i).getAmount() > 1){
 						getInventory().getItem(i).setAmount(getInventory().getItem(i).getAmount() - 1);
 					} else {
-						getInventory().remove(getInventory().getItem(i));
+						getInventory().removeItem(getInventory().getItem(i));
 					}
 					break;
 				}
@@ -212,6 +193,12 @@ public class Kiln extends Structure implements InventoryHolder{
 	}
 	
 	public boolean areSimilar(ItemStack item1, ItemStack item2){
+		if(item1.getType() == item2.getType()){
+			return true;
+		}
+		
+		// Everything below is just ignored
+		
 		if(item1.getType() == item2.getType()){
 			if(item1.getData() == item2.getData()){
 				if(item1.getItemMeta() != null && item2.getItemMeta() != null){
@@ -233,7 +220,7 @@ public class Kiln extends Structure implements InventoryHolder{
 		if(item.getType().getMaxDurability() <= 0){
 			durabilityPercent = 1.0f;
 		} else {
-			durabilityPercent = item.getDurability() / item.getType().getMaxDurability();
+			durabilityPercent = Math.max((item.getType().getMaxDurability() - item.getDurability()) / item.getType().getMaxDurability(), 0);
 		}
 		switch(item.getType()){
 		case IRON_CHESTPLATE:
@@ -309,7 +296,11 @@ public class Kiln extends Structure implements InventoryHolder{
 			
 			if(cookingTimes.containsKey(getInventory().getItem(slot).getType())){
 				if(Math.random() * (double)cookingTimes.get(getInventory().getItem(slot).getType()) < 0.10){
-					remove(getInventory().getItem(slot), 1);
+					if(getInventory().getItem(slot).getAmount() > 1){
+						getInventory().getItem(slot).setAmount(getInventory().getItem(slot).getAmount() - 1);
+					} else {
+						getInventory().removeItem(getInventory().getItem(slot));
+					}
 					return true;
 				} else {
 					return true;
