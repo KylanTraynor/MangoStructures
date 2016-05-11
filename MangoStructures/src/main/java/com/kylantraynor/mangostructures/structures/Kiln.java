@@ -57,8 +57,8 @@ public class Kiln extends Structure implements InventoryHolder{
 	private void tryMelt() {
 		List<Integer> ilist = getMeltableSlots();
 		int i = (int) Math.floor((Math.random() * ilist.size()));
-		if(isMeltable(getInventory().getItem(i))){
-			tryTransform(i);
+		if(isMeltable(getInventory().getItem(ilist.get(i)))){
+			tryTransform(ilist.get(i));
 		}
 	}
 
@@ -155,12 +155,23 @@ public class Kiln extends Structure implements InventoryHolder{
 	
 	public void tryTransform(int slot){
 		if(isMeltable(getInventory().getItem(slot))){
-			if(Math.random() < 0.2){
-				add(ingotKind.get(getInventory().getItem(slot).getType()), getIngotWorth(getInventory().getItem(slot)));
-				if(getInventory().getItem(slot).getAmount() > 1){
-					getInventory().getItem(slot).setAmount(getInventory().getItem(slot).getAmount() - 1);
-				} else {
-					getInventory().remove(getInventory().getItem(slot));;
+			ItemStack is = getInventory().getItem(slot);
+			if(is.getType().getMaxDurability() > 0){
+				is.setDurability((short) (is.getDurability() + 1));
+				if(Math.random() * is.getType().getMaxDurability() < 1 * ingotWorth.get(is.getType())){
+					add(ingotKind.get(is.getType()), ingotWorth.get(is.getType()));
+				}
+				if(is.getDurability() >= is.getType().getMaxDurability()){
+					getInventory().removeItem(is);
+				}
+			} else {
+				if(Math.random() < 0.2){
+					add(ingotKind.get(is.getType()), ingotWorth.get(is.getType()));
+					if(is.getAmount() > 1){
+						is.setAmount(is.getAmount() - 1);
+					} else {
+						getInventory().removeItem(is);;
+					}
 				}
 			}
 		}
