@@ -160,7 +160,7 @@ public class Kiln extends Structure implements InventoryHolder{
 			if(is.getType().getMaxDurability() > 0){
 				is.setDurability((short) (is.getDurability() + speed));
 				if(Math.random() * (is.getType().getMaxDurability()) < speed * ingotWorth.get(is.getType())){
-					add(ingotKind.get(is.getType()), ingotWorth.get(is.getType()));
+					add(ingotKind.get(is.getType()), 1);
 				}
 				if(is.getDurability() >= is.getType().getMaxDurability()){
 					getInventory().removeItem(is);
