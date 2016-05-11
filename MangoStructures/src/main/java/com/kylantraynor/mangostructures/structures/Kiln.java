@@ -152,9 +152,17 @@ public class Kiln extends Structure implements InventoryHolder{
 				} else {
 					getInventory().clear(slot);;
 				}
-				add(getIngotWorth(getInventory().getItem(slot)));
+				if(getInventory().getItem(slot).getType().toString().startsWith("IRON_")){
+					add(Material.IRON_INGOT, getIngotWorth(getInventory().getItem(slot)));
+				} else if(getInventory().getItem(slot).getType().toString().startsWith("GOLD_")){
+					add(Material.GOLD_INGOT, getIngotWorth(getInventory().getItem(slot)));
+				}
 			}
 		}
+	}
+	
+	public void add(Material m, int amount){
+		add(new ItemStack(m, amount));
 	}
 	
 	public void add(ItemStack item){
@@ -165,10 +173,10 @@ public class Kiln extends Structure implements InventoryHolder{
 						if(getInventory().getContents()[i].getAmount() <= item.getType().getMaxStackSize()){
 							getInventory().getContents()[i].setAmount(getInventory().getContents()[i].getAmount() + 1);
 							item.setAmount(item.getAmount() - 1);
+							break;
 						} else {
 							continue;
 						}
-						break;
 					}
 				} else {
 					getInventory().setItem(i, item);
@@ -180,6 +188,7 @@ public class Kiln extends Structure implements InventoryHolder{
 	
 	public void remove(ItemStack item, int amount){
 		while(amount > 0){
+			if(!getInventory().contains(item.getType())) return;
 			for( int i = 0 ; i < getInventory().getContents().length; i++){
 				if(getInventory().getContents()[i] != null){
 					if(areSimilar(getInventory().getContents()[i], item)){
@@ -188,6 +197,7 @@ public class Kiln extends Structure implements InventoryHolder{
 							amount -= 1;
 						} else {
 							getInventory().clear(i);
+							amount -= 1;
 						}
 						break;
 					}
@@ -213,7 +223,7 @@ public class Kiln extends Structure implements InventoryHolder{
 		return false;
 	}
 	
-	private ItemStack getIngotWorth(ItemStack item) {
+	private int getIngotWorth(ItemStack item) {
 		float durabilityPercent;
 		if(item.getType().getMaxDurability() <= 0){
 			durabilityPercent = 1.0f;
@@ -222,49 +232,49 @@ public class Kiln extends Structure implements InventoryHolder{
 		}
 		switch(item.getType()){
 		case IRON_CHESTPLATE:
-			return new ItemStack(Material.IRON_INGOT, (int) (8 * durabilityPercent));
+			return (int) (8 * durabilityPercent);
 		case IRON_LEGGINGS:
-			return new ItemStack(Material.IRON_INGOT, (int) (7 * durabilityPercent));
+			return (int) (7 * durabilityPercent);
 		case IRON_HELMET:
-			return new ItemStack(Material.IRON_INGOT, (int) (5 * durabilityPercent));
+			return (int) (5 * durabilityPercent);
 		case IRON_BOOTS: 
-			return new ItemStack(Material.IRON_INGOT, (int) (4 * durabilityPercent));
+			return (int) (4 * durabilityPercent);
 		case IRON_ORE:
-			return new ItemStack(Material.IRON_INGOT, 2);
+			return 2;
 		case IRON_SPADE:
-			return new ItemStack(Material.IRON_INGOT, (int) (1 * durabilityPercent));
+			return (int) (1 * durabilityPercent);
 		case IRON_PICKAXE:
-			return new ItemStack(Material.IRON_INGOT, (int) (3 * durabilityPercent));
+			return (int) (3 * durabilityPercent);
 		case IRON_SWORD:
-			return new ItemStack(Material.IRON_INGOT, (int) (2 * durabilityPercent));
+			return (int) (2 * durabilityPercent);
 		case IRON_HOE:
-			return new ItemStack(Material.IRON_INGOT, (int) (2 * durabilityPercent));
+			return (int) (2 * durabilityPercent);
 		case IRON_AXE:
-			return new ItemStack(Material.IRON_INGOT, (int) (3 * durabilityPercent));
+			return (int) (3 * durabilityPercent);
 		case GOLD_CHESTPLATE:
-			return new ItemStack(Material.GOLD_INGOT, (int) (8 * durabilityPercent));
+			return (int) (8 * durabilityPercent);
 		case GOLD_LEGGINGS:
-			return new ItemStack(Material.GOLD_INGOT, (int) (7 * durabilityPercent));
+			return (int) (7 * durabilityPercent);
 		case GOLD_HELMET:
-			return new ItemStack(Material.GOLD_INGOT, (int) (5 * durabilityPercent));
+			return (int) (5 * durabilityPercent);
 		case GOLD_BOOTS: 
-			return new ItemStack(Material.GOLD_INGOT, (int) (4 * durabilityPercent));
+			return (int) (4 * durabilityPercent);
 		case GOLD_ORE:
-			return new ItemStack(Material.GOLD_INGOT, 2);
+			return 2;
 		case GOLD_SPADE:
-			return new ItemStack(Material.GOLD_INGOT, (int) (1 * durabilityPercent));
+			return (int) (1 * durabilityPercent);
 		case GOLD_PICKAXE: 
-			return new ItemStack(Material.GOLD_INGOT, (int) (3 * durabilityPercent));
+			return (int) (3 * durabilityPercent);
 		case GOLD_SWORD:
-			return new ItemStack(Material.GOLD_INGOT, (int) (2 * durabilityPercent));
+			return (int) (2 * durabilityPercent);
 		case GOLD_HOE:
-			return new ItemStack(Material.GOLD_INGOT, (int) (2 * durabilityPercent));
+			return (int) (2 * durabilityPercent);
 		case GOLD_AXE:
-			return new ItemStack(Material.GOLD_INGOT, (int) (3 * durabilityPercent));
+			return (int) (3 * durabilityPercent);
 		default:
 			break;
 		}
-		return null;
+		return 0;
 	}
 
 	public List<Integer> getMeltableSlots(){
@@ -280,7 +290,12 @@ public class Kiln extends Structure implements InventoryHolder{
 	}
 
 	private boolean isMeltable(ItemStack item) {
-		return getIngotWorth(item) != null;
+		if(item.getType() == Material.IRON_INGOT) return false;
+		if(item.getType() == Material.GOLD_INGOT) return false;
+		if(item.getType() == Material.GOLD_NUGGET) return false;
+		if(item.getType().toString().startsWith("IRON_")) return true;
+		if(item.getType().toString().startsWith("GOLD_")) return true;
+		return false;
 	}
 	
 	private boolean tryConsumeFuel(){
