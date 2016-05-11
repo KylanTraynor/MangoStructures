@@ -83,7 +83,6 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		File f = new File(getDataFolder(), "Kilns.yml");
 		if(!f.exists()){
 			try {
-				f.mkdirs();
 				f.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
