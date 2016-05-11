@@ -42,6 +42,7 @@ public class MangoStructures extends JavaPlugin implements Listener{
 	public static boolean useChimneys = true;
 	
 	public void onEnable(){
+		saveDefaultConfig();
 		protocolManager = ProtocolLibrary.getProtocolManager();
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(this, this);
