@@ -156,7 +156,7 @@ public class Kiln extends Structure implements InventoryHolder{
 	public void tryTransform(int slot){
 		if(isMeltable(getInventory().getItem(slot))){
 			if(Math.random() < 0.2){
-				add(ingotKind.get(getInventory().getItem(slot)), getIngotWorth(getInventory().getItem(slot)));
+				add(ingotKind.get(getInventory().getItem(slot).getType()), getIngotWorth(getInventory().getItem(slot)));
 				if(getInventory().getItem(slot).getAmount() > 1){
 					getInventory().getItem(slot).setAmount(getInventory().getItem(slot).getAmount() - 1);
 				} else {
