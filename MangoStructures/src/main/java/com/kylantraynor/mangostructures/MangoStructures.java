@@ -61,10 +61,12 @@ public class MangoStructures extends JavaPlugin implements Listener{
 					}
 				}
 				for(Kiln k : allKilns.toArray(new Kiln[allKilns.size()])){
-					if(k.isValidShape()){
-						k.update();
-					} else {
-						allKilns.remove(k);
+					if(k.getLocation().getChunk().isLoaded()){
+						if(k.isValidShape()){
+							k.update();
+						} else {
+							allKilns.remove(k);
+						}
 					}
 				}
 			}
