@@ -45,11 +45,11 @@ public class Chimney extends Structure {
 		if(getBlocks().size() == 0){
 			return getLocation().add(0.5,0.5,0.5);
 		} else {
-			if(getBlocks().get(getBlocks().size() - 1).getLocation().add(0, 1, 0).getBlock().getLightFromSky() <= 10){
+			/*if(getBlocks().get(getBlocks().size() - 1).getLocation().add(0, 1, 0).getBlock().getLightFromSky() <= 10){
 				return getLocation().add(0.5,0.5,0.5);
-			} else {
+			} else {*/
 				return getBlocks().get(getBlocks().size() - 1).getLocation().add(0.5, 1.5, 0.5);
-			}
+			//}
 		}
 	}
 
