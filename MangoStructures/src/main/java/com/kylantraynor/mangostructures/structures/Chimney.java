@@ -27,7 +27,7 @@ public class Chimney extends Structure {
 	private Location emiterLocation;
 
 	static enum ChimneyMaterial {
-		BRICK,  STONEBRICK,  COBBLESTONE,  FURNACE, WALL;
+		BRICK,  STONEBRICK,  COBBLESTONE,  FURNACE, WALL, POT;
 		private ChimneyMaterial() {}
 	}
 
@@ -45,7 +45,7 @@ public class Chimney extends Structure {
 		if(getBlocks().size() == 0){
 			return getLocation().add(0.5,0.5,0.5);
 		} else {
-			if(getBlocks().get(getBlocks().size() - 1).getBlock().getLightFromSky() <= 10){
+			if(getBlocks().get(getBlocks().size() - 1).getLocation().add(0, 1, 0).getBlock().getLightFromSky() <= 10){
 				return getLocation().add(0.5,0.5,0.5);
 			} else {
 				return getBlocks().get(getBlocks().size() - 1).getLocation().add(0.5, 1.5, 0.5);
@@ -93,6 +93,8 @@ public class Chimney extends Structure {
 			return ChimneyMaterial.FURNACE;
 		case COBBLE_WALL:
 			return ChimneyMaterial.WALL;
+		case FLOWER_POT:
+			return ChimneyMaterial.POT;
 		}
 		return null;
 	}
@@ -100,6 +102,7 @@ public class Chimney extends Structure {
 	private Block getNextBlock(Block b){
 		
 		BlockFace out = getOutput(b.getState());
+		if(out == null) return null;
 		if(!isChimneyMaterial(b.getRelative(out).getType())) return null;
 		BlockFace in = getInput(b.getRelative(out).getState());
 		
@@ -139,6 +142,8 @@ public class Chimney extends Structure {
 		}
 		if(state.getType() == Material.COBBLE_WALL){
 			return BlockFace.DOWN;
+		} else if(state.getType() == Material.FLOWER_POT){
+			return BlockFace.DOWN;
 		}
 		return null;
 	}
@@ -171,6 +176,8 @@ public class Chimney extends Structure {
 				return BlockFace.EAST;
 			}
 			return BlockFace.UP;
+		} else if(state.getType() == Material.FLOWER_POT){
+			return null;
 		}
 		return BlockFace.UP;
 	}

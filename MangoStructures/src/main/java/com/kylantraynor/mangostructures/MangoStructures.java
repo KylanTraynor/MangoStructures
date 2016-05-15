@@ -81,8 +81,8 @@ public class MangoStructures extends JavaPlugin implements Listener{
 	private void reloadKilns() {
 		Kiln.cookingTimes.put(Material.COAL, 9);
 		Kiln.cookingTimes.put(Material.COAL_BLOCK, 81);
-		Kiln.cookingTimes.put(Material.LOG, 3);
-		Kiln.cookingTimes.put(Material.LOG_2, 3);
+		Kiln.cookingTimes.put(Material.LOG, 4);
+		Kiln.cookingTimes.put(Material.LOG_2, 4);
 		Kiln.register(Material.IRON_ORE, Material.IRON_INGOT, 2);
 		Kiln.register(Material.GOLD_ORE, Material.GOLD_INGOT, 2);
 		Kiln.register(Material.IRON_CHESTPLATE, Material.IRON_INGOT, 8);
