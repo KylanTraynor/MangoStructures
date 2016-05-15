@@ -45,7 +45,11 @@ public class Chimney extends Structure {
 		if(getBlocks().size() == 0){
 			return getLocation().add(0.5,0.5,0.5);
 		} else {
-			return getBlocks().get(getBlocks().size() - 1).getLocation().add(0.5, 1.5, 0.5);
+			if(getBlocks().get(getBlocks().size() - 1).getBlock().getLightFromSky() <= 10){
+				return getLocation().add(0.5,0.5,0.5);
+			} else {
+				return getBlocks().get(getBlocks().size() - 1).getLocation().add(0.5, 1.5, 0.5);
+			}
 		}
 	}
 
@@ -195,8 +199,8 @@ public class Chimney extends Structure {
 				sendSmoke(p, intensity);
 				if(!isSafe(p)){
 					p.damage(1);
-					if(p.getLocation().distance(getEmiterLocation()) < 2){
-						p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1));
+					if(p.getLocation().distance(getEmiterLocation()) < 2 * intensity){
+						p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 2, 1));
 					}
 				}
 				//p.spawnParticle(Particle.SMOKE_LARGE, getEmiterLocation(), 20, 0.5, 0.5, 0.5, 0.5, BlockFace.UP);
