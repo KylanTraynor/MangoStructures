@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import net.md_5.bungee.api.ChatColor;
@@ -23,6 +24,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -83,26 +86,37 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		Kiln.cookingTimes.put(Material.COAL_BLOCK, 81);
 		Kiln.cookingTimes.put(Material.LOG, 4);
 		Kiln.cookingTimes.put(Material.LOG_2, 4);
+		Kiln.cookingTimes.put(Material.WOOD, 1);
+		
+		Kiln.register(Material.IRON_DOOR, Material.IRON_INGOT, 6);
+		Kiln.register(Material.IRON_TRAPDOOR, Material.IRON_INGOT, 4);
+		
 		Kiln.register(Material.IRON_ORE, Material.IRON_INGOT, 2);
 		Kiln.register(Material.GOLD_ORE, Material.GOLD_INGOT, 2);
+		
 		Kiln.register(Material.IRON_CHESTPLATE, Material.IRON_INGOT, 8);
 		Kiln.register(Material.IRON_LEGGINGS, Material.IRON_INGOT, 7);
 		Kiln.register(Material.IRON_HELMET, Material.IRON_INGOT, 5);
 		Kiln.register(Material.IRON_BOOTS, Material.IRON_INGOT, 4);
+		
 		Kiln.register(Material.GOLD_CHESTPLATE, Material.GOLD_INGOT, 8);
 		Kiln.register(Material.GOLD_LEGGINGS, Material.GOLD_INGOT, 7);
 		Kiln.register(Material.GOLD_HELMET, Material.GOLD_INGOT, 5);
 		Kiln.register(Material.GOLD_BOOTS, Material.GOLD_INGOT, 4);
+		
 		Kiln.register(Material.IRON_AXE, Material.IRON_INGOT, 3);
 		Kiln.register(Material.IRON_PICKAXE, Material.IRON_INGOT, 3);
 		Kiln.register(Material.IRON_HOE, Material.IRON_INGOT, 2);
 		Kiln.register(Material.IRON_SWORD, Material.IRON_INGOT, 2);
 		Kiln.register(Material.IRON_SPADE, Material.IRON_INGOT, 1);
+		
 		Kiln.register(Material.GOLD_AXE, Material.GOLD_NUGGET, 3 * 9);
 		Kiln.register(Material.GOLD_PICKAXE, Material.GOLD_NUGGET, 3 * 9);
 		Kiln.register(Material.GOLD_HOE, Material.GOLD_NUGGET, 2 * 9);
 		Kiln.register(Material.GOLD_SWORD, Material.GOLD_NUGGET, 2 * 9);
 		Kiln.register(Material.GOLD_SPADE, Material.GOLD_NUGGET, 1 * 9);
+		
+		Kiln.register(Material.SAND, Material.GLASS, 2);
 		File f = new File(getDataFolder(), "Kilns.yml");
 		if(!f.exists()){
 			try {
@@ -212,5 +226,15 @@ public class MangoStructures extends JavaPlugin implements Listener{
 	public Structure getStructure(Block block)
 	{
 		return null;
+	}
+	
+	public void removeRecipeResultingIn(ItemStack is){
+		Iterator<Recipe> it = Bukkit.recipeIterator();
+		while(it.hasNext()){
+			Recipe r = it.next();
+			if (r != null && r.getResult().getType() == Material.BREAD) {
+				it.remove();
+			}
+		}
 	}
 }
