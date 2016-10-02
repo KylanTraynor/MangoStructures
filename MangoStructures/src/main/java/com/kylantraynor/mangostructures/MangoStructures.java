@@ -26,6 +26,10 @@ import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.material.MaterialData;
+import org.bukkit.material.Step;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -79,6 +83,78 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		this.getCommand("Chimney").setExecutor(new ChimneyCommand());
 		
 		reloadKilns();
+		addCustomRecipes();
+	}
+	
+	private void addCustomRecipes(){
+		ItemStack item;
+		Recipe recipe;
+		MaterialData data;
+		
+		item = new ItemStack(Material.STONE_BUTTON);
+		item.setAmount(4);
+		recipe = new ShapelessRecipe(item);
+		((ShapelessRecipe) recipe).addIngredient(Material.REDSTONE);
+		((ShapelessRecipe) recipe).addIngredient(Material.STONE);
+		Bukkit.addRecipe(recipe);
+		
+		item = new ItemStack(Material.COBBLESTONE);
+		recipe = new ShapedRecipe(item);
+		((ShapedRecipe) recipe).shape("xx", "xx");
+		((ShapedRecipe) recipe).setIngredient('x', Material.FLINT);
+		Bukkit.addRecipe(recipe);
+		
+		item = new ItemStack(Material.SMOOTH_BRICK);
+		recipe = new ShapedRecipe(item);
+		((ShapedRecipe) recipe).shape("x", "x");
+		data = new MaterialData(Material.STEP);
+		((Step)data).setMaterial(Material.STONE);
+		((ShapedRecipe) recipe).setIngredient('x', data);
+		Bukkit.addRecipe(recipe);
+		
+		item = new ItemStack(Material.COBBLESTONE);
+		recipe = new ShapedRecipe(item);
+		((ShapedRecipe) recipe).shape("x", "x");
+		data = new MaterialData(Material.STEP);
+		((Step)data).setMaterial(Material.COBBLESTONE);
+		((ShapedRecipe) recipe).setIngredient('x', data);
+		Bukkit.addRecipe(recipe);
+		
+		item = new ItemStack(Material.STONE_AXE);
+		recipe = new ShapedRecipe(item);
+		((ShapedRecipe) recipe).shape("sx", "s ");
+		((ShapedRecipe) recipe).setIngredient('x', Material.FLINT);
+		((ShapedRecipe) recipe).setIngredient('s', Material.STICK);
+		Bukkit.addRecipe(recipe);
+		recipe = new ShapedRecipe(item);
+		((ShapedRecipe) recipe).shape("xs", " s");
+		((ShapedRecipe) recipe).setIngredient('x', Material.FLINT);
+		((ShapedRecipe) recipe).setIngredient('s', Material.STICK);
+		Bukkit.addRecipe(recipe);
+		
+		item = new ItemStack(Material.STONE_PICKAXE);
+		recipe = new ShapedRecipe(item);
+		((ShapedRecipe) recipe).shape("xx", " s");
+		((ShapedRecipe) recipe).setIngredient('x', Material.FLINT);
+		((ShapedRecipe) recipe).setIngredient('s', Material.STICK);
+		Bukkit.addRecipe(recipe);
+		recipe = new ShapedRecipe(item);
+		((ShapedRecipe) recipe).shape("xx", "s ");
+		((ShapedRecipe) recipe).setIngredient('x', Material.FLINT);
+		((ShapedRecipe) recipe).setIngredient('s', Material.STICK);
+		Bukkit.addRecipe(recipe);
+		
+		item = new ItemStack(Material.STONE_HOE);
+		recipe = new ShapedRecipe(item);
+		((ShapedRecipe) recipe).shape("sx", "s ", "s ");
+		((ShapedRecipe) recipe).setIngredient('x', Material.FLINT);
+		((ShapedRecipe) recipe).setIngredient('s', Material.STICK);
+		Bukkit.addRecipe(recipe);
+		recipe = new ShapedRecipe(item);
+		((ShapedRecipe) recipe).shape("xs", " s" , " s");
+		((ShapedRecipe) recipe).setIngredient('x', Material.FLINT);
+		((ShapedRecipe) recipe).setIngredient('s', Material.STICK);
+		Bukkit.addRecipe(recipe);
 	}
 	
 	private void reloadKilns() {
@@ -115,6 +191,8 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		Kiln.register(Material.GOLD_HOE, Material.GOLD_NUGGET, 2 * 9);
 		Kiln.register(Material.GOLD_SWORD, Material.GOLD_NUGGET, 2 * 9);
 		Kiln.register(Material.GOLD_SPADE, Material.GOLD_NUGGET, 1 * 9);
+		
+		Kiln.register(Material.CLAY_BALL, Material.CLAY_BRICK, 1);
 		
 		Kiln.register(Material.SAND, Material.GLASS, 2);
 		File f = new File(getDataFolder(), "Kilns.yml");

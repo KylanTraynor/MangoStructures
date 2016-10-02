@@ -130,9 +130,7 @@ public class Kiln extends Structure implements InventoryHolder{
 			shape += "\n";
 		}
 	}
-	
-	
-	
+		
 	public boolean isValidShape(){
 		if(shape.matches("bbb,bbb,bbb,\nbbb,bnb,bbb,\nb[bf]b,[bf].[bf],b[bf]b,\nbbb,bib,bbb,\nb[bi]b,[bi]i[bi],b[bi]b,\nbbb,bcb,bbb,\n.b.,bfb,.b.,\n")){
 			return true;
@@ -235,6 +233,7 @@ public class Kiln extends Structure implements InventoryHolder{
 		return false;
 	}
 	
+/*
 	private int getIngotWorth(ItemStack item) {
 		float durabilityPercent;
 		if(item.getType().getMaxDurability() <= 0){
@@ -244,6 +243,7 @@ public class Kiln extends Structure implements InventoryHolder{
 		}
 		return (int)Math.floor(ingotWorth.get(item.getType()) * durabilityPercent);
 	}
+*/
 
 	public List<Integer> getMeltableSlots(){
 		List<Integer> list = new ArrayList<Integer>();
