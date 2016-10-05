@@ -27,7 +27,7 @@ public class Chimney extends Structure {
 	private Location emiterLocation;
 
 	static enum ChimneyMaterial {
-		BRICK,  STONEBRICK,  COBBLESTONE,  FURNACE, WALL, POT;
+		BRICK,  STONEBRICK,  COBBLESTONE, NETHERBRICK,  FURNACE, WALL, POT;
 		private ChimneyMaterial() {}
 	}
 
@@ -85,6 +85,8 @@ public class Chimney extends Structure {
 		switch (m){
 		case COBBLESTONE: case COBBLESTONE_STAIRS: 
 			return ChimneyMaterial.COBBLESTONE;
+		case NETHER_BRICK: case NETHER_BRICK_STAIRS:
+			return ChimneyMaterial.NETHERBRICK;
 		case SMOOTH_BRICK: case SMOOTH_STAIRS: 
 			return ChimneyMaterial.STONEBRICK;
 		case BRICK: case BRICK_STAIRS: 
@@ -152,6 +154,7 @@ public class Chimney extends Structure {
 		if(m == Material.COBBLESTONE_STAIRS) return true;
 		if(m == Material.SMOOTH_STAIRS) return true;
 		if(m == Material.BRICK_STAIRS) return true;
+		if(m == Material.NETHER_BRICK_STAIRS) return true;
 		return false;
 	}
 	
