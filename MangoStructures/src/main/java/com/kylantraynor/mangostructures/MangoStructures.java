@@ -108,7 +108,7 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		recipe = new ShapedRecipe(item);
 		((ShapedRecipe) recipe).shape("x", "x");
 		data = new MaterialData(Material.STEP);
-		((Step)data).setMaterial(Material.STONE);
+		data.setData((byte) 0);
 		((ShapedRecipe) recipe).setIngredient('x', data);
 		Bukkit.addRecipe(recipe);
 		
@@ -116,7 +116,15 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		recipe = new ShapedRecipe(item);
 		((ShapedRecipe) recipe).shape("x", "x");
 		data = new MaterialData(Material.STEP);
-		((Step)data).setMaterial(Material.COBBLESTONE);
+		data.setData((byte) 1);
+		((ShapedRecipe) recipe).setIngredient('x', data);
+		Bukkit.addRecipe(recipe);
+		
+		item = new ItemStack(Material.SMOOTH_BRICK);
+		recipe = new ShapedRecipe(item);
+		((ShapedRecipe) recipe).shape("x", "x");
+		data = new MaterialData(Material.STEP);
+		data.setData((byte) 5);
 		((ShapedRecipe) recipe).setIngredient('x', data);
 		Bukkit.addRecipe(recipe);
 		
