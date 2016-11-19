@@ -1,9 +1,0 @@
-name: MangoStructures
-main: com.kylantraynor.mangostructures.MangoStructures
-version: ${project.version}
-depend: [ProtocolLib]
-description: Plugin handling multi-block structures for Project Mango.
-commands:
-  chimney:
-    description: Access all the chimney commands.
-    permission: mangostructures.chimney
