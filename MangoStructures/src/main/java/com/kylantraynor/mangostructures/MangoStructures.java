@@ -28,7 +28,6 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.material.MaterialData;
-import org.bukkit.material.Step;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -174,16 +173,20 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		Kiln.register(Material.IRON_DOOR, Material.IRON_INGOT, 6);
 		Kiln.register(Material.IRON_TRAPDOOR, Material.IRON_INGOT, 4);
 		
+		Kiln.register(Material.IRON_FENCE, Material.IRON_FENCE, 6);
+		
 		Kiln.register(Material.IRON_ORE, Material.IRON_INGOT, 2);
 		Kiln.register(Material.GOLD_ORE, Material.GOLD_INGOT, 2);
 		
 		Kiln.register(Material.IRON_CHESTPLATE, Material.IRON_NUGGET, 8 * 9);
 		Kiln.register(Material.IRON_LEGGINGS, Material.IRON_NUGGET, 7 * 9);
+		Kiln.register(Material.IRON_BARDING, Material.IRON_NUGGET, 6 * 9);
 		Kiln.register(Material.IRON_HELMET, Material.IRON_NUGGET, 5 * 9);
 		Kiln.register(Material.IRON_BOOTS, Material.IRON_NUGGET, 4 * 9);
 		
 		Kiln.register(Material.GOLD_CHESTPLATE, Material.GOLD_NUGGET, 8 * 9);
 		Kiln.register(Material.GOLD_LEGGINGS, Material.GOLD_NUGGET, 7 * 9);
+		Kiln.register(Material.GOLD_BARDING, Material.GOLD_NUGGET, 6 * 9);
 		Kiln.register(Material.GOLD_HELMET, Material.GOLD_NUGGET, 5 * 9);
 		Kiln.register(Material.GOLD_BOOTS, Material.GOLD_NUGGET, 4 * 9);
 		
