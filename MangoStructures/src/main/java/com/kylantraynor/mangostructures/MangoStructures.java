@@ -264,6 +264,7 @@ public class MangoStructures extends JavaPlugin implements Listener{
 			for(Kiln k : allKilns){
 				if(k.isInside(event.getClickedBlock().getLocation())){
 					if(event.getClickedBlock().getType() == Material.IRON_TRAPDOOR){
+						event.setCancelled(true);
 						k.openInventory(event.getPlayer());
 					} else {
 						event.getPlayer().sendMessage(ChatColor.GRAY + "This is a Kiln.");
