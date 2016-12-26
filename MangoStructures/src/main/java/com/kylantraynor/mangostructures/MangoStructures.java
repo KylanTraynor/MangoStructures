@@ -184,6 +184,8 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		Kiln.register(Material.IRON_HELMET, Material.IRON_NUGGET, 5 * 9);
 		Kiln.register(Material.IRON_BOOTS, Material.IRON_NUGGET, 4 * 9);
 		
+		Kiln.register(Material.SADDLE, Material.IRON_NUGGET, 3 * 9);
+		
 		Kiln.register(Material.GOLD_CHESTPLATE, Material.GOLD_NUGGET, 8 * 9);
 		Kiln.register(Material.GOLD_LEGGINGS, Material.GOLD_NUGGET, 7 * 9);
 		Kiln.register(Material.GOLD_BARDING, Material.GOLD_NUGGET, 6 * 9);
@@ -202,7 +204,7 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		Kiln.register(Material.GOLD_SWORD, Material.GOLD_NUGGET, 2 * 9);
 		Kiln.register(Material.GOLD_SPADE, Material.GOLD_NUGGET, 1 * 9);
 		
-		Kiln.register(Material.CLAY_BALL, Material.CLAY_BRICK, 1);
+		Kiln.register(Material.CLAY_BALL, Material.CLAY_BRICK, 2);
 		
 		Kiln.register(Material.SAND, Material.GLASS, 2);
 		File f = new File(getDataFolder(), "Kilns.yml");
