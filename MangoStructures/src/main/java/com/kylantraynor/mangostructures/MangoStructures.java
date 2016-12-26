@@ -7,9 +7,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.md_5.bungee.api.ChatColor;
-
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -178,21 +177,21 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		Kiln.register(Material.IRON_ORE, Material.IRON_INGOT, 2);
 		Kiln.register(Material.GOLD_ORE, Material.GOLD_INGOT, 2);
 		
-		Kiln.register(Material.IRON_CHESTPLATE, Material.IRON_INGOT, 8);
-		Kiln.register(Material.IRON_LEGGINGS, Material.IRON_INGOT, 7);
-		Kiln.register(Material.IRON_HELMET, Material.IRON_INGOT, 5);
-		Kiln.register(Material.IRON_BOOTS, Material.IRON_INGOT, 4);
+		Kiln.register(Material.IRON_CHESTPLATE, Material.IRON_NUGGET, 8 * 9);
+		Kiln.register(Material.IRON_LEGGINGS, Material.IRON_NUGGET, 7 * 9);
+		Kiln.register(Material.IRON_HELMET, Material.IRON_NUGGET, 5 * 9);
+		Kiln.register(Material.IRON_BOOTS, Material.IRON_NUGGET, 4 * 9);
 		
-		Kiln.register(Material.GOLD_CHESTPLATE, Material.GOLD_INGOT, 8);
-		Kiln.register(Material.GOLD_LEGGINGS, Material.GOLD_INGOT, 7);
-		Kiln.register(Material.GOLD_HELMET, Material.GOLD_INGOT, 5);
-		Kiln.register(Material.GOLD_BOOTS, Material.GOLD_INGOT, 4);
+		Kiln.register(Material.GOLD_CHESTPLATE, Material.GOLD_NUGGET, 8 * 9);
+		Kiln.register(Material.GOLD_LEGGINGS, Material.GOLD_NUGGET, 7 * 9);
+		Kiln.register(Material.GOLD_HELMET, Material.GOLD_NUGGET, 5 * 9);
+		Kiln.register(Material.GOLD_BOOTS, Material.GOLD_NUGGET, 4 * 9);
 		
-		Kiln.register(Material.IRON_AXE, Material.IRON_INGOT, 3);
-		Kiln.register(Material.IRON_PICKAXE, Material.IRON_INGOT, 3);
-		Kiln.register(Material.IRON_HOE, Material.IRON_INGOT, 2);
-		Kiln.register(Material.IRON_SWORD, Material.IRON_INGOT, 2);
-		Kiln.register(Material.IRON_SPADE, Material.IRON_INGOT, 1);
+		Kiln.register(Material.IRON_AXE, Material.IRON_NUGGET, 3 * 9);
+		Kiln.register(Material.IRON_PICKAXE, Material.IRON_NUGGET, 3 * 9);
+		Kiln.register(Material.IRON_HOE, Material.IRON_NUGGET, 2 * 9);
+		Kiln.register(Material.IRON_SWORD, Material.IRON_NUGGET, 2 * 9);
+		Kiln.register(Material.IRON_SPADE, Material.IRON_NUGGET, 1 * 9);
 		
 		Kiln.register(Material.GOLD_AXE, Material.GOLD_NUGGET, 3 * 9);
 		Kiln.register(Material.GOLD_PICKAXE, Material.GOLD_NUGGET, 3 * 9);
