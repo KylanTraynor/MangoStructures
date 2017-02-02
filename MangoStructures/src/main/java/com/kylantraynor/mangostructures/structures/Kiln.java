@@ -16,6 +16,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
+import com.kylantraynor.mangostructures.MangoStructures;
+
 public class Kiln extends Structure implements InventoryHolder{
 	
 	static public Map<Material, Integer> cookingTimes = new HashMap<Material, Integer>();
@@ -284,6 +286,14 @@ public class Kiln extends Structure implements InventoryHolder{
 	}
 
 	private int getFuelSlot() {
+		Inventory inv = getInventory();
+		if(inv == null) {
+			MangoStructures.DEBUG("Couldn't get the inventory of Kiln at " + 
+					getLocation().getBlockX() + ", " + 
+					getLocation().getBlockY() + ", " + 
+					getLocation().getBlockZ() + ".");
+			return -1;
+		}
 		for(int i = 0; i < getInventory().getSize(); i++){
 			if(getInventory().getItem(i) != null){
 				if(cookingTimes.containsKey(getInventory().getItem(i).getType())){

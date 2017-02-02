@@ -45,6 +45,7 @@ public class MangoStructures extends JavaPlugin implements Listener{
 	private List<Kiln> allKilns = new ArrayList<Kiln>();
 	public static ProtocolManager protocolManager;
 	public static boolean useChimneys = true;
+	private static boolean DEBUG = false;
 	
 	public void onEnable(){
 		saveDefaultConfig();
@@ -327,5 +328,10 @@ public class MangoStructures extends JavaPlugin implements Listener{
 				it.remove();
 			}
 		}
+	}
+
+	public static void DEBUG(String string) {
+		if(!DEBUG) return;
+		Bukkit.getServer().getLogger().info(string);
 	}
 }
