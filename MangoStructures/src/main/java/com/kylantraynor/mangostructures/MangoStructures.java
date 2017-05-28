@@ -47,7 +47,7 @@ public class MangoStructures extends JavaPlugin implements Listener{
 	private List<Kiln> allKilns = new ArrayList<Kiln>();
 	public static ProtocolManager protocolManager;
 	public static boolean useChimneys = true;
-	private static boolean DEBUG = false;
+	private static boolean DEBUG = true;
 	public static Plugin currentInstance;
 	
 	public void onEnable(){
@@ -276,7 +276,6 @@ public class MangoStructures extends JavaPlugin implements Listener{
 					}
 				}
 			}
-		} else if(event.getAction() == Action.LEFT_CLICK_BLOCK){
 			if(event.getItem() == null){
 				for(Bell b : Bell.getBells()){
 					if(b.has(event.getClickedBlock())){
