@@ -14,6 +14,8 @@ public class BellsCommand implements CommandExecutor {
 		switch(args[0].toUpperCase()){
 		case "SOUND":
 			Bell.setSound(args[1]);
+			sender.sendMessage("Changed bells sound to " + args[1]);
+			return true;
 		}
 		return false;
 	}
