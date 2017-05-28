@@ -28,6 +28,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.material.MaterialData;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -35,6 +36,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.kylantraynor.mangostructures.commands.ChimneyCommand;
+import com.kylantraynor.mangostructures.structures.Bell;
 import com.kylantraynor.mangostructures.structures.Chimney;
 import com.kylantraynor.mangostructures.structures.Kiln;
 import com.kylantraynor.mangostructures.structures.Structure;
@@ -46,8 +48,10 @@ public class MangoStructures extends JavaPlugin implements Listener{
 	public static ProtocolManager protocolManager;
 	public static boolean useChimneys = true;
 	private static boolean DEBUG = false;
+	public static Plugin currentInstance;
 	
 	public void onEnable(){
+		currentInstance = this;
 		saveDefaultConfig();
 		protocolManager = ProtocolLibrary.getProtocolManager();
 		PluginManager pm = getServer().getPluginManager();
@@ -272,6 +276,17 @@ public class MangoStructures extends JavaPlugin implements Listener{
 					}
 				}
 			}
+		} else if(event.getAction() == Action.LEFT_CLICK_BLOCK){
+			if(event.getItem() == null){
+				for(Bell b : Bell.getBells()){
+					if(b.has(event.getClickedBlock())){
+						if(Bell.isClapperMaterial(event.getClickedBlock().getType())){
+							b.ring();
+							event.setCancelled(true);
+						}
+					}
+				}
+			}
 		}
 	}
 	
@@ -295,6 +310,21 @@ public class MangoStructures extends JavaPlugin implements Listener{
 						event.getPlayer().sendMessage(ChatColor.GREEN + "Kiln built!");
 						allKilns.add(k);
 					}
+				}
+			} else if(Bell.isClapperMaterial(event.getBlock().getType())){
+				Block cb = event.getBlock().getRelative(BlockFace.UP);
+				boolean foundBell = false;
+				while(Bell.isBellBlock(cb)){
+					if(!Bell.isClapperMaterial(cb.getType())){
+						foundBell = true;
+					} else if(foundBell){
+						Bell b = new Bell(cb.getLocation());
+						if(b.isValidShape()){
+							event.getPlayer().sendMessage(ChatColor.GREEN + "Bell created!");
+						}
+						break;
+					}
+					cb = cb.getRelative(BlockFace.UP);
 				}
 			}
 		}
