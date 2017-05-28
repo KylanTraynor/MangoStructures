@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -31,10 +32,10 @@ public class Bell extends Structure{
 		"[..x..-..x..][..x..-..x..][..c..-..c..]",
 		"[..x..-..x..][.xcx.-.xcx.][..c..-..c..]",
 		"[.xxx.-.xxx.][.xcx.-.xcx.][..c..-..c..]",
-		"[..x..-..x..][.xcx.-.xcx.][0xcx0-0xcx0][.0c0.-.0c0.]",
-		"[.xxx.-.xxx.][.xcx.-.xcx.][0xcx0-0xcx0][.0c0.-.0c0.]",
-		"[..x..-..x..][.xcx.-.xcx.][0xcx0-0xcx0][0xcx0-0xcx0][.0c0.-.0c0.]",
-		"[.xxx.-.xxx.][.xcx.-.xcx.][0xcx0-0xcx0][0xcx0-0xcx0][.0c0.-.0c0.]",
+		"[..x..-..x..][.xcx.-.xcx.][.xcx.-.xcx.][..c..-..c..]",
+		"[.xxx.-.xxx.][.xcx.-.xcx.][.xcx.-.xcx.][..c..-..c..]",
+		"[..x..-..x..][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][..c..-..c..]",
+		"[.xxx.-.xxx.][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][..c..-..c..]",
 		"[..x..-..x..][.xcx.-.xcx.][0xcx0-0xcx0][0xcx0-0xcx0][0xcx0-0xcx0][.0c0.-.0c0.]",
 		"[.xxx.-.xxx.][.xcx.-.xcx.][0xcx0-0xcx0][0xcx0-0xcx0][0xcx0-0xcx0][.0c0.-.0c0.]",
 		"[..x..-..x..][.xcx.-.xcx.][0xcx0-0xcx0][0xcx0-0xcx0][x0c0x-x0c0x][.0c0.-.0c0.]",
@@ -161,9 +162,10 @@ public class Bell extends Structure{
 		if(inRefractoryPeriod){ return;}
 		float pitch = 2F - (((float) getIronAmount()) / 15.0F) - (((float) getBrassAmount()) / 20.0F);
 		float volume = (float) ((2.0f - pitch) * 3.0F + ((float) getLocation().getY()) * 0.1F);
+		MangoStructures.DEBUG(this.getName() + " is ringing with pitch: " + pitch + " and volume: " + volume + ".");
 		for(Player player : Bukkit.getOnlinePlayers()){
-			MangoStructures.DEBUG(this.getName() + " is ringing with pitch: " + pitch + " and volume: " + volume + ".");
 			player.playSound(getLocation(), "bell01", volume, pitch);
+			player.playSound(getLocation(), Sound.BLOCK_ANVIL_PLACE, volume, pitch);
 		}
 		this.getLocation().getWorld().playEffect(getLocation().clone().add(0, -3, 0), Effect.RECORD_PLAY, 1);
 		inRefractoryPeriod = true;
