@@ -396,6 +396,9 @@ public class MangoStructures extends JavaPlugin implements Listener{
 				}
 				event.getPlayer().sendMessage(ChatColor.GREEN + "[Bell] Sign linked!");
 				event.setLine(1, ChatColor.GREEN + b.getName());
+			} else {
+				event.getPlayer().sendMessage(ChatColor.RED + "[Bell] A bell named " + event.getLine(1) + " doesn't exist.");
+				event.setLine(1, ChatColor.RED + event.getLine(1));
 			}
 		}
 	}
