@@ -41,8 +41,10 @@ public class BellsCommand implements CommandExecutor {
 						}
 					}
 				} else {
-					b.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, b.getLocation(), 5);
-					break;
+					b.getWorld().spawnParticle(Particle.NOTE, b.getLocation().clone().add(0.5, 0.5, 0.5), 5);
+					if(b.getType() != Material.AIR){
+						break;
+					}
 				}
 			}
 			sender.sendMessage(ChatColor.RED + "Couldn't find a bell within 16 blocks.");

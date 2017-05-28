@@ -170,7 +170,7 @@ public class Bell extends Structure{
 			player.playSound(getLocation(), sound, volume, pitch);
 			//player.playSound(getLocation(), Sound.BLOCK_ANVIL_PLACE, volume, pitch);
 		}
-		this.getLocation().getWorld().spawnParticle(Particle.NOTE, this.getLocation().clone().add(0, -3, 0), 5);
+		this.getLocation().getWorld().spawnParticle(Particle.NOTE, this.getLocation().clone().add(0.5, -(shape.split("-").length - 1), 0.5), 5);
 		//this.getLocation().getWorld().playEffect(getLocation().clone().add(0, -3, 0), Effect.RECORD_PLAY, 1);
 		inRefractoryPeriod = true;
 		BukkitRunnable r = new BukkitRunnable(){
