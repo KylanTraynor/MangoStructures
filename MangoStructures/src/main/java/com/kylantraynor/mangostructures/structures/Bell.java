@@ -73,12 +73,15 @@ public class Bell extends Structure{
 				switch(getLocation().clone().add(x, -y, 0).getBlock().getType()){
 				case IRON_BLOCK: case GOLD_BLOCK:
 					sb1.append(bell);
+					break;
 				case FENCE: case ACACIA_FENCE: case DARK_OAK_FENCE: case SPRUCE_FENCE: case JUNGLE_FENCE: case BIRCH_FENCE: case COBBLE_WALL:
 					sb1.append(clapper);
+					break;
 				//case AIR:
 				//	sb1.append(air);
 				default:
 					sb1.append(other);
+					break;
 				}
 			}
 			sb1.append("-");
@@ -86,14 +89,17 @@ public class Bell extends Structure{
 				switch(getLocation().clone().add(0, -y, z).getBlock().getType()){
 				case IRON_BLOCK: case GOLD_BLOCK:
 					sb1.append(bell);
+					break;
 				case FENCE: case DARK_OAK_FENCE: case SPRUCE_FENCE: case JUNGLE_FENCE: case BIRCH_FENCE: case COBBLE_WALL:
 					sb1.append(clapper);
+					break;
 				default:
-					sb1.append(air);
+					sb1.append(other);
+					break;
 				}
 			}
 			sb1.append("]");
-			if(!sb1.toString().equalsIgnoreCase("[00000-00000]")){
+			if(!sb1.toString().equalsIgnoreCase("[.....-.....]")){
 				sb.append(sb1.toString());
 			}
 		}
