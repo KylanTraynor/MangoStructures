@@ -43,7 +43,7 @@ public class Bell extends Structure{
 		"[.xxx.-.xxx.][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][x.c.x-x.c.x][..c..-..c..]"
 	};
 
-	private static String sound = "bell01";
+	private static String sound = "bell";
 	
 	private String shape = "";
 	private BlockType[][][] blockShape;
@@ -60,7 +60,7 @@ public class Bell extends Structure{
 		}
 	}
 
-	private void loadShape() {
+	public void loadShape() {
 		String clapper = "c";
 		String bell = "x";
 		String air = "0";
@@ -241,6 +241,17 @@ public class Bell extends Structure{
 					return b;
 				}
 			}
+		}
+		return null;
+	}
+
+	public static Bell getAt(Location location) {
+		for(Bell b : bells){
+			if(b.getLocation().getWorld().getName().equals(location.getWorld().getName())) continue;
+			if(b.getLocation().getBlockX() != location.getBlockX()) continue;
+			if(b.getLocation().getBlockY() != location.getBlockY()) continue;
+			if(b.getLocation().getBlockZ() != location.getBlockZ()) continue;
+			return b;
 		}
 		return null;
 	}

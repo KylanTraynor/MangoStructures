@@ -1,12 +1,10 @@
 package com.kylantraynor.mangostructures;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -52,7 +50,7 @@ public class MangoStructures extends JavaPlugin implements Listener{
 	private List<Kiln> allKilns = new ArrayList<Kiln>();
 	public static ProtocolManager protocolManager;
 	public static boolean useChimneys = true;
-	private static boolean DEBUG = true;
+	private static boolean DEBUG = false;
 	public static Plugin currentInstance;
 	
 	public void onEnable(){
@@ -92,6 +90,7 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		this.getCommand("Bells").setExecutor(new BellsCommand());
 		
 		reloadKilns();
+		reloadBells();
 		addCustomRecipes();
 	}
 	
@@ -264,9 +263,60 @@ public class MangoStructures extends JavaPlugin implements Listener{
 			e.printStackTrace();
 		}
 	}
+	
+	private void reloadBells(){
+		File f = new File(getDataFolder(), "Bells.yml");
+		if(!f.exists()){
+			try {
+				f.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return;
+		}
+		YamlConfiguration config = new YamlConfiguration();
+		try {
+			config.load(f);
+			Bell.getBells().clear();
+			int i = 0;
+			while(config.contains("" + i)){
+				World w = Bukkit.getServer().getWorld(config.getString(""+i+".world"));
+				int x = config.getInt(""+i+".x");
+				int y = config.getInt(""+i+".y");
+				int z = config.getInt(""+i+".z");
+				Location l = new Location(w, x, y, z);
+				Bell b = new Bell(l);
+				if(config.contains("" + i + ".name")){
+					b.setName(config.getString("" + i + ".name"));
+				}
+			}
+		} catch (IOException | InvalidConfigurationException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void onDisable() {
 		saveAllKilns();
+		saveAllBells();
+	}
+
+	private void saveAllBells() {
+		YamlConfiguration config = new YamlConfiguration();
+		for(int i = 0; i < Bell.getBells().size(); i++){
+			config.set("" + i + ".world", Bell.getBells().get(i).getLocation().getWorld().getName());
+			config.set("" + i + ".x", Bell.getBells().get(i).getLocation().getBlockX());
+			config.set("" + i + ".y", Bell.getBells().get(i).getLocation().getBlockY());
+			config.set("" + i + ".z", Bell.getBells().get(i).getLocation().getBlockZ());
+			if(Bell.getBells().get(i).getName() != null){
+				config.set("" + i + ".name", Bell.getBells().get(i).getName());
+			}
+		}
+		File f = new File(getDataFolder(), "Bells.yml");
+		try{
+			config.save(f);
+		} catch(IOException e){
+			e.printStackTrace();
+		}
 	}
 
 	@EventHandler
@@ -323,12 +373,18 @@ public class MangoStructures extends JavaPlugin implements Listener{
 					if(!Bell.isClapperMaterial(cb.getType())){
 						foundBell = true;
 					} else if(foundBell){
-						Bell b = new Bell(cb.getLocation());
-						if(b.isValidShape()){
-							event.getPlayer().sendMessage(ChatColor.GREEN + "Bell created!");
-						} else {
-							event.getPlayer().sendMessage(ChatColor.RED + "Bell doesn't have a valid shape.");
-							event.getPlayer().sendMessage(b.getShape());
+						Bell b = Bell.getAt(cb.getLocation());
+						if(b == null){
+							b = new Bell(cb.getLocation());
+							if(b.isValidShape()){
+								event.getPlayer().sendMessage(ChatColor.GREEN + "Bell created!");
+							} else {
+								event.getPlayer().sendMessage(ChatColor.RED + "Bell doesn't have a valid shape.");
+								event.getPlayer().sendMessage(b.getShape());
+							}
+						}else{ 
+							b.loadShape();
+							event.getPlayer().sendMessage(ChatColor.GREEN + "Bell's shape has been updated.");
 						}
 						break;
 					}

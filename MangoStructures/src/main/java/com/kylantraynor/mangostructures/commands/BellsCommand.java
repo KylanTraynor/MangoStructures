@@ -23,10 +23,19 @@ public class BellsCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label,
 			String[] args) {
 		switch(args[0].toUpperCase()){
-		case "SOUND":
-			Bell.setSound(args[1]);
-			sender.sendMessage("Changed bells sound to " + args[1]);
+		case "HELP": default:
+			sender.sendMessage(ChatColor.GOLD + "/bells rename <new name>");
+			sender.sendMessage(ChatColor.GOLD + "/bells sound <soundname>");
 			return true;
+		case "SOUND":
+			if(sender.isOp()){
+				Bell.setSound(args[1]);
+				sender.sendMessage("Changed bells sound to " + args[1]);
+				return true;
+			} else {
+				sender.sendMessage(ChatColor.RED + "You don't have the permission to do this.");
+				return true;
+			}
 		case "RENAME":
 			if(!(sender instanceof Player)) return false;
 			if(args.length < 2) return false;
@@ -48,9 +57,9 @@ public class BellsCommand implements CommandExecutor {
 				}
 			}
 			sender.sendMessage(ChatColor.RED + "Couldn't find a bell within 16 blocks.");
-			
+			return true;
 		}
-		return false;
+		//return false;
 	}
 
 }
