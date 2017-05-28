@@ -35,6 +35,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import com.kylantraynor.mangostructures.commands.BellsCommand;
 import com.kylantraynor.mangostructures.commands.ChimneyCommand;
 import com.kylantraynor.mangostructures.structures.Bell;
 import com.kylantraynor.mangostructures.structures.Chimney;
@@ -84,6 +85,7 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		bk.runTaskTimer(this, 10L, 20L);
 		
 		this.getCommand("Chimney").setExecutor(new ChimneyCommand());
+		this.getCommand("Bells").setExecutor(new BellsCommand());
 		
 		reloadKilns();
 		addCustomRecipes();

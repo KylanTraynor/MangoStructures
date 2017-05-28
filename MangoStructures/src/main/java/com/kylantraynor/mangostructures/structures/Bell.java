@@ -41,6 +41,8 @@ public class Bell extends Structure{
 		"[..x..-..x..][.xcx.-.xcx.][0xcx0-0xcx0][0xcx0-0xcx0][x0c0x-x0c0x][.0c0.-.0c0.]",
 		"[.xxx.-.xxx.][.xcx.-.xcx.][0xcx0-0xcx0][0xcx0-0xcx0][x0c0x-x0c0x][.0c0.-.0c0.]"
 	};
+
+	private static String sound = "bell01";
 	
 	private String shape = "";
 	private BlockType[][][] blockShape;
@@ -164,8 +166,8 @@ public class Bell extends Structure{
 		float volume = (float) ((2.0f - pitch) * 3.0F + ((float) getLocation().getY()) * 0.1F);
 		MangoStructures.DEBUG(this.getName() + " is ringing with pitch: " + pitch + " and volume: " + volume + ".");
 		for(Player player : Bukkit.getOnlinePlayers()){
-			player.playSound(getLocation(), "bell01", volume, pitch);
-			player.playSound(getLocation(), Sound.BLOCK_ANVIL_PLACE, volume, pitch);
+			player.playSound(getLocation(), sound, volume, pitch);
+			//player.playSound(getLocation(), Sound.BLOCK_ANVIL_PLACE, volume, pitch);
 		}
 		this.getLocation().getWorld().playEffect(getLocation().clone().add(0, -3, 0), Effect.RECORD_PLAY, 1);
 		inRefractoryPeriod = true;
@@ -224,6 +226,10 @@ public class Bell extends Structure{
 
 	public String getShape() {
 		return shape;
+	}
+
+	public static void setSound(String s) {
+		sound  = s;
 	}
 	
 }

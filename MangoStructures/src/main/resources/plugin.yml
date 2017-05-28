@@ -7,3 +7,6 @@ commands:
   chimney:
     description: Access all the chimney commands.
     permission: mangostructures.chimney
+  bells:
+    description: Access all the bells commands.
+    permission: mangostructures.bells
