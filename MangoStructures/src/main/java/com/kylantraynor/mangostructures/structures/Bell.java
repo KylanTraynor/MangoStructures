@@ -99,7 +99,9 @@ public class Bell extends Structure{
 				}
 			}
 			sb1.append("]");
-			if(!sb1.toString().equalsIgnoreCase("[.....-.....]")){
+			if(sb1.toString().equalsIgnoreCase("[.....-.....]")){
+				break;
+			} else {
 				sb.append(sb1.toString());
 			}
 		}
@@ -117,7 +119,7 @@ public class Bell extends Structure{
 			for(int x = -1; x <= 1; x++){
 				for(int z = -1; z <= 1; z++){
 					Block b = l.getWorld().getBlockAt(l.getBlockX() + x, l.getBlockY() + y, l.getBlockZ() + z);
-					if(!blocks.contains(b) && isBellBlock(b)){
+					if(!blocks.contains(b.getState()) && isBellBlock(b)){
 						blocks.add(b.getState());
 						addBlocksAround(b.getLocation());
 					}
