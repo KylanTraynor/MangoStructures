@@ -8,6 +8,7 @@ import java.util.Set;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,16 +30,19 @@ public class BellsCommand implements CommandExecutor {
 		case "RENAME":
 			if(!(sender instanceof Player)) return false;
 			if(args.length < 2) return false;
-			Set<Material> set = new HashSet<Material>();
-			set.add(Material.GOLD_BLOCK);
-			set.add(Material.IRON_BLOCK);
-			List<Block> list = ((Player) sender).getLineOfSight(set, 16);
+			List<Block> list = ((Player) sender).getLineOfSight((Set<Material>)null, 16);
 			for(Block b : list){
-				for(Bell bell : Bell.getBells()){
-					if(bell.has(b)){
-						bell.setName(args[1]);
-						return true;
+				if(Bell.isBellBlock(b)){
+					for(Bell bell : Bell.getBells()){
+						if(bell.has(b)){
+							bell.setName(args[1]);
+							sender.sendMessage(ChatColor.GREEN + "Successfully changed this bell's name to " + args[1] + ".");
+							return true;
+						}
 					}
+				} else {
+					b.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, b.getLocation(), 5);
+					break;
 				}
 			}
 			sender.sendMessage(ChatColor.RED + "Couldn't find a bell within 16 blocks.");
