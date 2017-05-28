@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,6 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Sign;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
@@ -21,6 +23,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.BlockRedstoneEvent;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -347,6 +351,53 @@ public class MangoStructures extends JavaPlugin implements Listener{
 			}
 		}
 		activeChimneys.add(c);
+	}
+	
+	@EventHandler
+	public void onBlockRedstone(BlockRedstoneEvent event){
+		int x = event.getBlock().getX();
+		int y = event.getBlock().getY();
+		int z = event.getBlock().getZ();
+		if(event.getBlock().getWorld().getBlockAt(x+1,y,z).getState() instanceof Sign){
+			signRedstoneEvent(event,x+1,y,z,event.getNewCurrent() > 0);
+		}
+		if(event.getBlock().getWorld().getBlockAt(x-1,y,z).getState() instanceof Sign){
+			signRedstoneEvent(event,x-1,y,z,event.getNewCurrent() > 0 );
+		}
+		if(event.getBlock().getWorld().getBlockAt(x,y,z+1).getState() instanceof Sign){
+			signRedstoneEvent(event,x,y,z+1,event.getNewCurrent() > 0);
+		}
+		if(event.getBlock().getWorld().getBlockAt(x,y,z-1).getState() instanceof Sign){
+			signRedstoneEvent(event,x,y,z-1,event.getNewCurrent() > 0);
+		}
+	}
+	
+	public void signRedstoneEvent(BlockRedstoneEvent event, int x, int y, int z, boolean isPowered){
+		Sign sign = (Sign)event.getBlock().getWorld().getBlockAt(x,y,z).getState();
+		if (sign.getLine(0).equalsIgnoreCase("[BELL]")){
+			if (isPowered){
+				Bell target = Bell.get(sign.getLine(1).replaceFirst("" + ChatColor.GREEN, ""));
+				if (target == null){return;}
+				if(Utils.get2DDistanceSquared(target.getLocation().getBlockX(), target.getLocation().getZ(), sign.getX(), sign.getZ()) > 900) return;
+				
+				target.ring();
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onSignChange(SignChangeEvent event){
+		if (event.getLine(0).equalsIgnoreCase("[BELL]")){
+			Bell b = Bell.get(event.getLine(1));
+			if(b != null){
+				if(Utils.get2DDistanceSquared(b.getLocation().getBlockX(), b.getLocation().getBlockZ(), event.getBlock().getX(), event.getBlock().getZ()) > 900) {
+					event.getPlayer().sendMessage(ChatColor.RED + "[Bell] Bell " + b.getName() + " is too far from this sign to create a link.");
+					return;
+				}
+				event.getPlayer().sendMessage(ChatColor.GREEN + "[Bell] Sign linked!");
+				event.setLine(1, ChatColor.GREEN + b.getName());
+			}
+		}
 	}
 
 	public Structure getStructure(Block block)

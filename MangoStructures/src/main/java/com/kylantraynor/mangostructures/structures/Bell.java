@@ -231,5 +231,16 @@ public class Bell extends Structure{
 	public static void setSound(String s) {
 		sound  = s;
 	}
+
+	public static Bell get(String name) {
+		for(Bell b : bells){
+			if(b.getName() != null){
+				if(b.getName().equalsIgnoreCase(name)){
+					return b;
+				}
+			}
+		}
+		return null;
+	}
 	
 }
