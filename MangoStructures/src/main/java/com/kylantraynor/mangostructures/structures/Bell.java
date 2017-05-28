@@ -211,5 +211,9 @@ public class Bell extends Structure{
 		}
 		return false;
 	}
+
+	public String getShape() {
+		return shape;
+	}
 	
 }

@@ -323,6 +323,7 @@ public class MangoStructures extends JavaPlugin implements Listener{
 							event.getPlayer().sendMessage(ChatColor.GREEN + "Bell created!");
 						} else {
 							event.getPlayer().sendMessage(ChatColor.RED + "Bell doesn't have a valid shape.");
+							event.getPlayer().sendMessage(b.getShape());
 						}
 						break;
 					}
