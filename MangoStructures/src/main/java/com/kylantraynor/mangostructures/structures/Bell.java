@@ -27,18 +27,18 @@ public class Bell extends Structure{
 	}
 	
 	static String[] validShapes = {
-		"\\[.0x0.\\-.0x0.\\]\\[.0c0.\\-.0c0.\\]",
-		"\\[.0x0.\\-.0x0.\\]\\[.0x0.\\-.0x0.\\]\\[.0c0.\\-.0c0.\\]",
-		"\\[.0x0.\\-.0x0.\\]\\[0xcx0\\-0xcx0\\]\\[.0c0.\\-.0c0.\\]",
-		"\\[0xxx0\\-0xxx0\\]\\[0xcx0\\-0xcx0\\]\\[.0c0.\\-.0c0.\\]",
-		"\\[.0x0.\\-.0x0.\\]\\[0xcx0\\-0xcx0\\]\\[0xcx0\\-0xcx0\\]\\[.0c0.\\-.0c0.\\]",
-		"\\[0xxx0\\-0xxx0\\]\\[0xcx0\\-0xcx0\\]\\[0xcx0\\-0xcx0\\]\\[.0c0.\\-.0c0.\\]",
-		"\\[.0x0.\\-.0x0.\\]\\[0xcx0\\-0xcx0\\]\\[0xcx0\\-0xcx0\\]\\[0xcx0\\-0xcx0\\]\\[.0c0.\\-.0c0.\\]",
-		"\\[0xxx0\\-0xxx0\\]\\[0xcx0\\-0xcx0\\]\\[0xcx0\\-0xcx0\\]\\[0xcx0\\-0xcx0\\]\\[.0c0.\\-.0c0.\\]",
-		"\\[.0x0.\\-.0x0.\\]\\[0xcx0\\-0xcx0\\]\\[0xcx0\\-0xcx0\\]\\[0xcx0\\-0xcx0\\]\\[0xcx0\\-0xcx0\\]\\[.0c0.\\-.0c0.\\]",
-		"\\[0xxx0\\-0xxx0\\]\\[0xcx0\\-0xcx0\\]\\[0xcx0\\-0xcx0\\]\\[0xcx0\\-0xcx0\\]\\[0xcx0\\-0xcx0\\]\\[.0c0.\\-.0c0.\\]",
-		"\\[.0x0.\\-.0x0.\\]\\[0xcx0\\-0xcx0\\]\\[0xcx0\\-0xcx0\\]\\[0xcx0\\-0xcx0\\]\\[x0c0x\\-x0c0x\\]\\[.0c0.\\-.0c0.\\]",
-		"\\[0xxx0\\-0xxx0\\]\\[0xcx0\\-0xcx0\\]\\[0xcx0\\-0xcx0\\]\\[0xcx0\\-0xcx0\\]\\[x0c0x\\-x0c0x\\]\\[.0c0.\\-.0c0.\\]"
+		"[..x..-..x..][..c..-..c..]",
+		"[..x..-..x..][..x..-..x..][..c..-..c..]",
+		"[..x..-..x..][.xcx.-.xcx.][..c..-..c..]",
+		"[.xxx.-.xxx.][.xcx.-.xcx.][..c..-..c..]",
+		"[..x..-..x..][.xcx.-.xcx.][0xcx0-0xcx0][.0c0.-.0c0.]",
+		"[.xxx.-.xxx.][.xcx.-.xcx.][0xcx0-0xcx0][.0c0.-.0c0.]",
+		"[..x..-..x..][.xcx.-.xcx.][0xcx0-0xcx0][0xcx0-0xcx0][.0c0.-.0c0.]",
+		"[.xxx.-.xxx.][.xcx.-.xcx.][0xcx0-0xcx0][0xcx0-0xcx0][.0c0.-.0c0.]",
+		"[..x..-..x..][.xcx.-.xcx.][0xcx0-0xcx0][0xcx0-0xcx0][0xcx0-0xcx0][.0c0.-.0c0.]",
+		"[.xxx.-.xxx.][.xcx.-.xcx.][0xcx0-0xcx0][0xcx0-0xcx0][0xcx0-0xcx0][.0c0.-.0c0.]",
+		"[..x..-..x..][.xcx.-.xcx.][0xcx0-0xcx0][0xcx0-0xcx0][x0c0x-x0c0x][.0c0.-.0c0.]",
+		"[.xxx.-.xxx.][.xcx.-.xcx.][0xcx0-0xcx0][0xcx0-0xcx0][x0c0x-x0c0x][.0c0.-.0c0.]"
 	};
 	
 	private String shape = "";
@@ -60,6 +60,7 @@ public class Bell extends Structure{
 		String clapper = "c";
 		String bell = "x";
 		String air = "0";
+		String other = ".";
 		int maxHeight = 0;
 		for(String s : validShapes){
 			maxHeight = Math.max(maxHeight, s.split("-").length - 1);
@@ -74,8 +75,10 @@ public class Bell extends Structure{
 					sb1.append(bell);
 				case FENCE: case ACACIA_FENCE: case DARK_OAK_FENCE: case SPRUCE_FENCE: case JUNGLE_FENCE: case BIRCH_FENCE: case COBBLE_WALL:
 					sb1.append(clapper);
+				//case AIR:
+				//	sb1.append(air);
 				default:
-					sb1.append(air);
+					sb1.append(other);
 				}
 			}
 			sb1.append("-");
@@ -125,7 +128,7 @@ public class Bell extends Structure{
 
 	public boolean isValidShape(){
 		for(String s : validShapes){
-			if(Pattern.matches(s, shape)) return true;
+			if(s.equals(shape)) return true;
 		}
 		return false;
 	}
