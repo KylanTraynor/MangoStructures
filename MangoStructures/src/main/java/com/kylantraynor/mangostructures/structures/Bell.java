@@ -36,10 +36,10 @@ public class Bell extends Structure{
 		"[.xxx.-.xxx.][.xcx.-.xcx.][.xcx.-.xcx.][..c..-..c..]",
 		"[..x..-..x..][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][..c..-..c..]",
 		"[.xxx.-.xxx.][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][..c..-..c..]",
-		"[..x..-..x..][.xcx.-.xcx.][0xcx0-0xcx0][0xcx0-0xcx0][0xcx0-0xcx0][.0c0.-.0c0.]",
-		"[.xxx.-.xxx.][.xcx.-.xcx.][0xcx0-0xcx0][0xcx0-0xcx0][0xcx0-0xcx0][.0c0.-.0c0.]",
-		"[..x..-..x..][.xcx.-.xcx.][0xcx0-0xcx0][0xcx0-0xcx0][x0c0x-x0c0x][.0c0.-.0c0.]",
-		"[.xxx.-.xxx.][.xcx.-.xcx.][0xcx0-0xcx0][0xcx0-0xcx0][x0c0x-x0c0x][.0c0.-.0c0.]"
+		"[..x..-..x..][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][..c..-..c..]",
+		"[.xxx.-.xxx.][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][..c..-..c..]",
+		"[..x..-..x..][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][x.c.x-x.c.x][..c..-..c..]",
+		"[.xxx.-.xxx.][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][x.c.x-x.c.x][..c..-..c..]"
 	};
 
 	private static String sound = "bell01";
