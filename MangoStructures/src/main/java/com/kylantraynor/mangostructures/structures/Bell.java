@@ -40,7 +40,8 @@ public class Bell extends Structure{
 		"[..x..-..x..][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][..c..-..c..]",
 		"[.xxx.-.xxx.][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][..c..-..c..]",
 		"[..x..-..x..][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][x.c.x-x.c.x][..c..-..c..]",
-		"[.xxx.-.xxx.][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][x.c.x-x.c.x][..c..-..c..]"
+		"[.xxx.-.xxx.][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][x.c.x-x.c.x][..c..-..c..]",
+		"[..x..-..x..][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][.xcx.-.xcx.][x.c.x-x.c.x][..c..-..c..]"
 	};
 
 	private static String sound = "bell";
@@ -59,16 +60,21 @@ public class Bell extends Structure{
 			bells.add(this);
 		}
 	}
+	
+	public int getMaxHeight(){
+		int maxHeight = 0;
+		for(String s : validShapes){
+			maxHeight = Math.max(maxHeight, s.split("-").length - 1);
+		}
+		return maxHeight;
+	}
 
 	public void loadShape() {
 		String clapper = "c";
 		String bell = "x";
 		String air = "0";
 		String other = ".";
-		int maxHeight = 0;
-		for(String s : validShapes){
-			maxHeight = Math.max(maxHeight, s.split("-").length - 1);
-		}
+		int maxHeight = getMaxHeight();
 		StringBuilder sb = new StringBuilder();
 		for(int y = 1; y <= maxHeight; y++){
 			StringBuilder sb1 = new StringBuilder();
