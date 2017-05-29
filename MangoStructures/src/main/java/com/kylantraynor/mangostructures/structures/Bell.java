@@ -259,7 +259,7 @@ public class Bell extends Structure{
 
 	public static Bell getAt(Location location) {
 		for(Bell b : bells){
-			if(b.getLocation().getWorld().getName().equals(location.getWorld().getName())) continue;
+			if(!b.getLocation().getWorld().getName().equals(location.getWorld().getName())) continue;
 			if(b.getLocation().getBlockX() != location.getBlockX()) continue;
 			if(b.getLocation().getBlockY() != location.getBlockY()) continue;
 			if(b.getLocation().getBlockZ() != location.getBlockZ()) continue;

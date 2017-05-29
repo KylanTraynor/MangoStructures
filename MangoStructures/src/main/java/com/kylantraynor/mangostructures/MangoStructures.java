@@ -285,9 +285,11 @@ public class MangoStructures extends JavaPlugin implements Listener{
 				int y = config.getInt(""+i+".y");
 				int z = config.getInt(""+i+".z");
 				Location l = new Location(w, x, y, z);
-				Bell b = new Bell(l);
-				if(config.contains("" + i + ".name")){
-					b.setName(config.getString("" + i + ".name"));
+				if(Bell.getAt(l) == null){
+					Bell b = new Bell(l);
+					if(config.contains("" + i + ".name")){
+						b.setName(config.getString("" + i + ".name"));
+					}
 				}
 				i++;
 			}
