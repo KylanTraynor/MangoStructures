@@ -169,6 +169,8 @@ public class Bell extends Structure{
 	
 	public void ring(){
 		if(inRefractoryPeriod){ return;}
+		loadShape();
+		if(!isValidShape()) return;
 		float pitch = 2F - (((float) getIronAmount()) / 15.0F) - (((float) getBrassAmount()) / 20.0F);
 		float volume = (float) ((2.0f - pitch) * 3.0F + ((float) getLocation().getY()) * 0.1F);
 		MangoStructures.DEBUG(this.getName() + " is ringing with pitch: " + pitch + " and volume: " + volume + ".");
