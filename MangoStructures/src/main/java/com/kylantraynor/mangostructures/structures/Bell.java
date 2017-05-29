@@ -227,7 +227,7 @@ public class Bell extends Structure{
 		int y1 = l1.getBlockY();
 		int z1 = l1.getBlockZ();
 		if(x1 < this.getLocation().getBlockX() - 3 || x1 > this.getLocation().getBlockX() + 3) return false;
-		if(y1 < this.getLocation().getBlockY() - 6 || y1 > this.getLocation().getBlockY()) return false;
+		if(y1 < this.getLocation().getBlockY() - getMaxHeight() || y1 > this.getLocation().getBlockY()) return false;
 		if(z1 < this.getLocation().getBlockZ() - 3 || z1 > this.getLocation().getBlockZ() + 3) return false;
 		for(BlockState s : blocks){
 			Location l = s.getLocation();
