@@ -289,6 +289,7 @@ public class MangoStructures extends JavaPlugin implements Listener{
 				if(config.contains("" + i + ".name")){
 					b.setName(config.getString("" + i + ".name"));
 				}
+				i++;
 			}
 		} catch (IOException | InvalidConfigurationException e) {
 			e.printStackTrace();
