@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -101,19 +102,19 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		
 		item = new ItemStack(Material.STONE_BUTTON);
 		item.setAmount(4);
-		recipe = new ShapelessRecipe(item);
+		recipe = new ShapelessRecipe(new NamespacedKey(this, "stone_button"), item);
 		((ShapelessRecipe) recipe).addIngredient(Material.REDSTONE);
 		((ShapelessRecipe) recipe).addIngredient(Material.STONE);
 		Bukkit.addRecipe(recipe);
 		
 		item = new ItemStack(Material.COBBLESTONE);
-		recipe = new ShapedRecipe(item);
+		recipe = new ShapedRecipe(new NamespacedKey(this, "cobble_from_flint"), item);
 		((ShapedRecipe) recipe).shape("xx", "xx");
 		((ShapedRecipe) recipe).setIngredient('x', Material.FLINT);
 		Bukkit.addRecipe(recipe);
 		
 		item = new ItemStack(Material.SMOOTH_BRICK);
-		recipe = new ShapedRecipe(item);
+		recipe = new ShapedRecipe(new NamespacedKey(this, "brick_from_steps0"), item);
 		((ShapedRecipe) recipe).shape("x", "x");
 		data = new MaterialData(Material.STEP);
 		data.setData((byte) 0);
@@ -121,7 +122,7 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		Bukkit.addRecipe(recipe);
 		
 		item = new ItemStack(Material.COBBLESTONE);
-		recipe = new ShapedRecipe(item);
+		recipe = new ShapedRecipe(new NamespacedKey(this, "cobble_from_steps"), item);
 		((ShapedRecipe) recipe).shape("x", "x");
 		data = new MaterialData(Material.STEP);
 		data.setData((byte) 3);
@@ -129,7 +130,7 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		Bukkit.addRecipe(recipe);
 		
 		item = new ItemStack(Material.SMOOTH_BRICK);
-		recipe = new ShapedRecipe(item);
+		recipe = new ShapedRecipe(new NamespacedKey(this, "brick_from_steps5"), item);
 		((ShapedRecipe) recipe).shape("x", "x");
 		data = new MaterialData(Material.STEP);
 		data.setData((byte) 5);
@@ -137,36 +138,36 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		Bukkit.addRecipe(recipe);
 		
 		item = new ItemStack(Material.STONE_AXE);
-		recipe = new ShapedRecipe(item);
+		recipe = new ShapedRecipe(new NamespacedKey(this, "flint_axe0"), item);
 		((ShapedRecipe) recipe).shape("sx", "s ");
 		((ShapedRecipe) recipe).setIngredient('x', Material.FLINT);
 		((ShapedRecipe) recipe).setIngredient('s', Material.STICK);
 		Bukkit.addRecipe(recipe);
-		recipe = new ShapedRecipe(item);
+		recipe = new ShapedRecipe(new NamespacedKey(this, "flint_axe1"), item);
 		((ShapedRecipe) recipe).shape("xs", " s");
 		((ShapedRecipe) recipe).setIngredient('x', Material.FLINT);
 		((ShapedRecipe) recipe).setIngredient('s', Material.STICK);
 		Bukkit.addRecipe(recipe);
 		
 		item = new ItemStack(Material.STONE_PICKAXE);
-		recipe = new ShapedRecipe(item);
+		recipe = new ShapedRecipe(new NamespacedKey(this, "flint_pick0"), item);
 		((ShapedRecipe) recipe).shape("xx", " s");
 		((ShapedRecipe) recipe).setIngredient('x', Material.FLINT);
 		((ShapedRecipe) recipe).setIngredient('s', Material.STICK);
 		Bukkit.addRecipe(recipe);
-		recipe = new ShapedRecipe(item);
+		recipe = new ShapedRecipe(new NamespacedKey(this, "flint_pick1"), item);
 		((ShapedRecipe) recipe).shape("xx", "s ");
 		((ShapedRecipe) recipe).setIngredient('x', Material.FLINT);
 		((ShapedRecipe) recipe).setIngredient('s', Material.STICK);
 		Bukkit.addRecipe(recipe);
 		
 		item = new ItemStack(Material.STONE_HOE);
-		recipe = new ShapedRecipe(item);
+		recipe = new ShapedRecipe(new NamespacedKey(this, "flint_hoe1"), item);
 		((ShapedRecipe) recipe).shape("sx", "s ", "s ");
 		((ShapedRecipe) recipe).setIngredient('x', Material.FLINT);
 		((ShapedRecipe) recipe).setIngredient('s', Material.STICK);
 		Bukkit.addRecipe(recipe);
-		recipe = new ShapedRecipe(item);
+		recipe = new ShapedRecipe(new NamespacedKey(this, "flint_hoe2"), item);
 		((ShapedRecipe) recipe).shape("xs", " s" , " s");
 		((ShapedRecipe) recipe).setIngredient('x', Material.FLINT);
 		((ShapedRecipe) recipe).setIngredient('s', Material.STICK);
