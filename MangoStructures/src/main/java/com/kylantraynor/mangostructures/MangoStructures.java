@@ -65,17 +65,17 @@ public class MangoStructures extends JavaPlugin implements Listener{
 				if(!MangoStructures.useChimneys) return;
 				Chimney[] chmny = activeChimneys.toArray(new Chimney[activeChimneys.size()]);
 				for (Chimney c : chmny) {
-					Block b = c.getLocation().getBlock();
-					if (b.getType() == Material.BURNING_FURNACE){
-						if (b.getChunk().isLoaded()) {
+					if(c.getLocation().getWorld().isChunkLoaded(c.getLocation().getBlockX() >> 4, c.getLocation().getBlockZ() >> 4)){
+						Block b = c.getLocation().getBlock();
+						if (b.getType() == Material.BURNING_FURNACE){
 							c.puff();
+						} else {
+							activeChimneys.remove(c);
 						}
-					} else {
-						activeChimneys.remove(c);
 					}
 				}
 				for(Kiln k : allKilns.toArray(new Kiln[allKilns.size()])){
-					if(k.getLocation().getChunk().isLoaded()){
+					if(k.getLocation().getWorld().isChunkLoaded(k.getLocation().getBlockX() >> 4, k.getLocation().getBlockZ() >> 4)){
 						if(k.isValidShape()){
 							k.update();
 						} else {
