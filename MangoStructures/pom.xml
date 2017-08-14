@@ -33,8 +33,8 @@
 		<!-- ProtocolLib -->
 		<dependency>
     		<groupId>com.comphenix.protocol</groupId>
-    		<artifactId>ProtocolLib</artifactId>
-  		</dependency>
+    		<artifactId>ProtocolLib-API</artifactId>
+		</dependency>
   		<!--Spigot API-->
     <dependency>
            <groupId>org.spigotmc</groupId>
@@ -51,11 +51,6 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>com.comphenix.protocol</groupId>
-				<artifactId>ProtocolLib</artifactId>
-				<version>4.2.0-SNAPSHOT</version>
-			</dependency>
-			<dependency>
 				<groupId>org.spigotmc</groupId>
 				<artifactId>spigot-api</artifactId>
 				<version>1.12-R0.1-SNAPSHOT</version>
@@ -64,6 +59,11 @@
 				<groupId>org.bukkit</groupId>
 				<artifactId>bukkit</artifactId>
 				<version>1.12-R0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.comphenix.protocol</groupId>
+				<artifactId>ProtocolLib-API</artifactId>
+				<version>4.3.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
