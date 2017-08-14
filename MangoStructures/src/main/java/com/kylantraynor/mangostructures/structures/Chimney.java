@@ -168,6 +168,9 @@ public class Chimney extends Structure {
 		}
 		if ((state.getData() instanceof Furnace)){
 			Furnace fr = (Furnace)state.getData();
+			if(state.getBlock().getRelative(BlockFace.UP).getType() == Material.COBBLE_WALL){
+				return BlockFace.UP;
+			}
 			switch (fr.getFacing()){
 			case NORTH: 
 				return BlockFace.SOUTH;
