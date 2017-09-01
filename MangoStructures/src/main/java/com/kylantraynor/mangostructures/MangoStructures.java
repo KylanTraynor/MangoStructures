@@ -131,12 +131,14 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		data = new MaterialData(Material.DIRT);
 		data.setData((byte) 0);
 		((ShapedRecipe) recipe).setIngredient('x', data);
+		Bukkit.addRecipe(recipe);
 		
 		recipe = new ShapedRecipe(new NamespacedKey(this, "dirst_from_slabs"), new ItemStack(Material.DIRT));
 		((ShapedRecipe) recipe).shape("x","x");
 		data = new MaterialData(Material.STEP);
 		data.setData((byte) 2);
 		((ShapedRecipe) recipe).setIngredient('x', data);
+		Bukkit.addRecipe(recipe);
 		
 		item = new ItemStack(Material.COBBLESTONE);
 		recipe = new ShapedRecipe(new NamespacedKey(this, "cobble_from_steps"), item);
