@@ -31,6 +31,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.material.MaterialData;
+import org.bukkit.material.Step;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -121,11 +122,7 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		((ShapedRecipe) recipe).setIngredient('x', data);
 		Bukkit.addRecipe(recipe);
 		
-		item = new ItemStack(Material.STEP);
-		MaterialData d = item.getData();
-		d.setData((byte) 2);
-		item.setData(d);
-		item.setAmount(4);
+		item = new Step(Material.WOOD).toItemStack(4);
 		recipe = new ShapedRecipe(new NamespacedKey(this, "dirt_slab"), item);
 		((ShapedRecipe) recipe).shape("xx");
 		data = new MaterialData(Material.DIRT);
@@ -133,10 +130,9 @@ public class MangoStructures extends JavaPlugin implements Listener{
 		((ShapedRecipe) recipe).setIngredient('x', data);
 		Bukkit.addRecipe(recipe);
 		
-		recipe = new ShapedRecipe(new NamespacedKey(this, "dirst_from_slabs"), new ItemStack(Material.DIRT));
+		recipe = new ShapedRecipe(new NamespacedKey(this, "dirt_from_slabs"), new ItemStack(Material.DIRT));
 		((ShapedRecipe) recipe).shape("x","x");
-		data = new MaterialData(Material.STEP);
-		data.setData((byte) 2);
+		data = new Step(Material.WOOD);
 		((ShapedRecipe) recipe).setIngredient('x', data);
 		Bukkit.addRecipe(recipe);
 		
